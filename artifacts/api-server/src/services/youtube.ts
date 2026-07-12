@@ -134,13 +134,23 @@ export async function getChannelRaw(channelId: string): Promise<YTChannelRaw | n
 
 async function fetchChannelRaw(channelId: string): Promise<YTChannelRaw | null> {
   const key = ensureKey();
-  const { data } = await client.get("/channels", {
-    params: {
-      key,
-      id: channelId,
-      part: "snippet,statistics,contentDetails,brandingSettings",
-    },
-  });
+  let data;
+  try {
+    const resp = await client.get("/channels", {
+      params: {
+        key,
+        id: channelId,
+        part: "snippet,statistics,contentDetails,brandingSettings",
+      },
+    });
+    data = resp.data;
+  } catch (err: any) {
+    console.error("[youtube] fetchChannelRaw FAILED for channelId:", channelId);
+    console.error("[youtube]   HTTP status:", err.response?.status);
+    console.error("[youtube]   Google error body:", JSON.stringify(err.response?.data));
+    console.error("[youtube]   Request URL was:", err.config?.url, "params:", JSON.stringify(err.config?.params));
+    throw err;
+  }
   const c = (data.items || [])[0];
   if (!c) return null;
 
@@ -185,9 +195,19 @@ export async function getRecentVideos(uploadsPlaylistId: string, max = 25): Prom
 async function fetchRecentVideos(uploadsPlaylistId: string, max: number): Promise<YTVideoSummary[]> {
   const key = ensureKey();
 
-  const { data: pl } = await client.get("/playlistItems", {
-    params: { key, playlistId: uploadsPlaylistId, part: "contentDetails,snippet", maxResults: max },
-  });
+  let pl;
+  try {
+    const resp = await client.get("/playlistItems", {
+      params: { key, playlistId: uploadsPlaylistId, part: "contentDetails,snippet", maxResults: max },
+    });
+    pl = resp.data;
+  } catch (err: any) {
+    if (err.response?.status === 404) {
+      console.warn("[youtube] uploads playlist not found (channel likely has 0 videos):", uploadsPlaylistId);
+      return [];
+    }
+    throw err;
+  }
 
   const ids: string[] = (pl.items || []).map((i: any) => i.contentDetails.videoId);
   if (ids.length === 0) return [];
