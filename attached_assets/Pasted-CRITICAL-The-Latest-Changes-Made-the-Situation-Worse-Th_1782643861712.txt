@@ -1,0 +1,166 @@
+CRITICAL - The Latest Changes Made the Situation Worse
+
+The latest changes have broken functionality that was previously working, and the original YouTube OAuth issue is still not fixed.
+
+New Problems Introduced
+1. Google Login / Signup is now broken
+
+Before your latest changes, Google Sign In and Sign Up were working.
+
+Now, clicking Google Sign In or Google Sign Up redirects to a Google page showing:
+
+403 - You do not have access to this page.
+
+This is a regression caused by the recent changes.
+
+Please identify exactly what you changed that caused Google OAuth to stop working and restore it immediately.
+
+2. Connect YouTube Still Doesn't Work
+
+The original issue is still present.
+
+The logs still show:
+
+channelId: null
+youtubeRefreshToken: null
+channelTitle: null
+
+and
+
+POST /api/connected/auto-detect-youtube
+403
+
+Nothing is being stored in the database.
+
+3. Google OAuth Scopes Became Worse
+
+Previously the logs showed:
+
+email
+userinfo.email
+userinfo.profile
+openid
+profile
+
+Now the logs show:
+
+Clerk Google token scopes: []
+
+The scopes are now completely empty.
+
+Something you changed has broken the Google OAuth flow.
+
+Please Stop Guessing
+
+Please stop making changes based on assumptions.
+
+Every change so far has introduced another issue while the original issue remains unresolved.
+
+I need you to debug this systematically.
+
+I Want You To Debug Step-by-Step
+
+I want you to trace the complete flow with logs.
+
+Do not skip any step.
+
+Verify:
+
+Google Login
+Clerk OAuth
+Connect YouTube button
+/api/youtube-oauth/start
+Redirect to Google
+Callback execution
+Authorization code
+Token exchange
+Access token
+Refresh token
+Database update
+Channel lookup
+Auto Detect
+Final response
+
+I want logs for every step.
+
+Please Restore Working Functionality First
+
+Before adding new fixes:
+
+Restore Google Login.
+Restore Google Signup.
+Restore the Connect page.
+
+Do not continue changing unrelated authentication code until those work again.
+
+Find the Real Root Cause
+
+I don't want guesses anymore.
+
+I want the actual root cause.
+
+Use logs.
+
+Use breakpoints.
+
+Trace the execution.
+
+Inspect every request.
+
+Inspect every response.
+
+Inspect every database update.
+
+Inspect every OAuth redirect.
+
+Inspect every callback.
+
+Inspect every Clerk configuration.
+
+Inspect every Google OAuth request.
+
+Inspect every environment variable.
+
+Find the exact point where the flow breaks.
+
+If You Need Anything From Me
+
+If you need anything, ask me directly.
+
+I can provide:
+
+Google Cloud Console configuration
+OAuth Client settings
+Redirect URIs
+Clerk Dashboard
+Environment variables
+Database records
+Browser Network logs
+Server logs
+API responses
+Any credentials or configuration you need
+
+Do not assume anything.
+
+This Needs To Be Fixed Completely
+
+Please give this issue your full attention.
+
+I need both flows working exactly as intended:
+
+Flow 1
+User signs in with Google
+YouTube is automatically connected
+Channel information is stored
+Auto Detect succeeds
+Flow 2
+User signs in with Email
+User clicks Connect YouTube
+OAuth completes successfully
+Refresh token is saved
+Channel is saved
+Auto Detect succeeds
+
+At the moment neither flow works, and Google Login has now also been broken.
+
+Please debug this carefully and don't stop until the entire authentication and YouTube connection flow is working end-to-end.

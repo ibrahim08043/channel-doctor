@@ -1,0 +1,146 @@
+# 🚨 GOOD. NOW GO ALL THE WAY.
+
+Stop guessing and stop giving generic explanations.
+
+I want a COMPLETE ROOT CAUSE ANALYSIS.
+
+You have already added the debug endpoint.
+
+Now I want you to trace the problem completely.
+
+---
+
+## STEP 1
+
+Analyze the output from:
+
+```js
+fetch("/channel-doctor/api/connected/debug-oauth", {
+  credentials: "include"
+})
+.then(r => r.json())
+.then(d => console.log(JSON.stringify(d, null, 2)))
+```
+
+and determine:
+
+* whether a Google token exists
+* whether a refresh token exists
+* what scopes were granted
+* whether youtube.readonly exists
+* whether Clerk actually stores the token
+* whether Google recognizes the token
+* whether YouTube Data API v3 accepts the token
+
+---
+
+## STEP 2
+
+DO NOT STOP AT IDENTIFYING THE FAILURE.
+
+Trace the entire chain:
+
+Clerk Login
+
+↓
+
+Google External Account
+
+↓
+
+Access Token
+
+↓
+
+Granted Scopes
+
+↓
+
+Google TokenInfo
+
+↓
+
+YouTube API Initialization
+
+↓
+
+youtube.channels.list()
+
+↓
+
+Response
+
+Find the EXACT point where the chain breaks.
+
+---
+
+## STEP 3
+
+If the problem is code:
+
+FIX IT.
+
+If the problem is configuration:
+
+Tell me EXACTLY which one.
+
+Examples:
+
+* missing GOOGLE_CLIENT_ID
+* missing GOOGLE_CLIENT_SECRET
+* YouTube Data API v3 disabled
+* OAuth consent screen incomplete
+* missing test user
+* Clerk provider not requesting youtube.readonly
+* access token missing scope
+* refresh token missing
+* wrong redirect URI
+
+I want the exact issue.
+
+---
+
+## STEP 4
+
+DO NOT GIVE GENERAL ADVICE.
+
+Show evidence.
+
+Print:
+
+* granted scopes
+* Google email
+* token info
+* raw YouTube API response
+* HTTP status codes
+* exact error messages
+
+---
+
+## STEP 5
+
+IF THIS CANNOT BE FIXED IN CODE,
+
+then stop wasting time trying random patches.
+
+Instead tell me:
+
+### THESE ARE THE SETTINGS OR KEYS I NEED TO PROVIDE.
+
+List them one by one.
+
+Do not say:
+
+"Everything looks fine."
+
+Do not say:
+
+"Try reauthorizing."
+
+Do not say:
+
+"It should work."
+
+I want hard proof and the exact root cause.
+
+Keep investigating until the root cause is found.

@@ -1,0 +1,2 @@
+- [JSX generic syntax](jsx-generic-syntax.md) — Babel/Vite rejects `<Component<T>` JSX syntax; use arrow wrapper + cast instead.
+- [Settings Fast Refresh circular import](settings-circular-import.md) — exporting non-component functions from a page component file breaks Vite HMR and crashes App; extract to lib/.

@@ -1,0 +1,212 @@
+# 🚨 CRITICAL YOUTUBE CONNECTION FAILURE (HIGH PRIORITY)
+
+THE CURRENT IMPLEMENTATION IS BROKEN.
+
+The user is already authenticated and owns a YouTube channel, but channel auto-detection is failing.
+
+Current error:
+
+```json
+{
+  "error": "google_auth_required",
+  "message": "Sign in with Google to auto-detect your YouTube channel."
+}
+```
+
+This is unacceptable.
+
+DO NOT just return this error.
+
+FIND THE ROOT CAUSE AND FIX IT.
+
+---
+
+# REQUIRED INVESTIGATION
+
+DO NOT GUESS.
+
+TRACE THE ENTIRE FLOW.
+
+Verify:
+
+### 1. Google OAuth Authentication
+
+Check:
+
+* Is the user actually logged in with Google?
+* Is the Google access token stored correctly?
+* Is the token expired?
+* Is the refresh token available?
+* Is the session attached to the request?
+
+---
+
+### 2. OAuth Scopes
+
+Verify that these scopes are requested:
+
+```javascript
+openid
+email
+profile
+https://www.googleapis.com/auth/youtube.readonly
+```
+
+Without youtube.readonly, channel detection will fail.
+
+---
+
+### 3. Google Token Retrieval
+
+Inspect:
+
+* Clerk session
+* JWT
+* OAuth token
+* Stored Google provider information
+
+Ensure the backend can access the Google token.
+
+---
+
+### 4. YouTube API Configuration
+
+VERIFY THE ENTIRE YOUTUBE CONFIGURATION.
+
+Check:
+
+* GOOGLE_CLIENT_ID
+* GOOGLE_CLIENT_SECRET
+* YOUTUBE_API_KEY
+
+Confirm environment variables are loaded correctly.
+
+DO NOT assume they are correct.
+
+Log them safely and verify.
+
+---
+
+### 5. Test YouTube API Directly
+
+After obtaining the Google access token, test:
+
+```javascript
+GET https://www.googleapis.com/youtube/v3/channels
+?part=snippet,statistics
+&mine=true
+```
+
+Authorization:
+
+```javascript
+Bearer access_token
+```
+
+This endpoint should return the authenticated user's channel.
+
+---
+
+### 6. Diagnose Failure
+
+Log:
+
+* token existence
+* scopes
+* response status
+* Google API errors
+* YouTube API errors
+
+DO NOT hide exceptions.
+
+DO NOT return generic messages.
+
+---
+
+# IMPORTANT
+
+The YouTube API KEY is NOT enough for detecting the user's own channel.
+
+The API key is only for public data.
+
+To detect the user's personal channel, use:
+
+### Google OAuth Access Token
+
+with:
+
+```javascript
+channels.list({
+  part: "snippet,statistics",
+  mine: true
+})
+```
+
+NOT:
+
+```javascript
+key: YOUTUBE_API_KEY
+```
+
+---
+
+# FIX THE AUTO-DETECTION ENDPOINT
+
+Investigate:
+
+```javascript
+POST /api/connected/auto-detect-youtube
+```
+
+Current endpoint returns:
+
+400 Bad Request
+
+This is unacceptable.
+
+The endpoint must:
+
+1. Verify Google login.
+2. Retrieve OAuth token.
+3. Verify youtube.readonly scope.
+4. Call YouTube API using Bearer token.
+5. Detect the user's channel automatically.
+6. Store channel information.
+7. Return structured JSON.
+
+---
+
+# ABSOLUTE REQUIREMENTS
+
+DO NOT remove:
+
+* Email login
+* Google login
+* JWT auth
+* Clerk auth
+
+DO NOT add manual channel entry.
+
+DO NOT ask users for channel IDs.
+
+DO NOT ask users for URLs.
+
+DO NOT add "Connect as Your Channel".
+
+The ONLY source of truth for channel ownership is:
+
+Google OAuth → Access Token → YouTube API → mine=true
+
+---
+
+# FINAL REQUIREMENT
+
+Trace the complete authentication chain and FIX the underlying problem.
+
+Do not apply temporary workarounds.
+
+Do not bypass the flow.
+
+Do not return placeholder responses.
+
+Find the actual bug and resolve it properly.

@@ -1,0 +1,515 @@
+# 🚨 CRITICAL PRODUCT CORRECTION DIRECTIVE
+
+## THIS IS NOT ACCEPTABLE
+
+The Instagram and Facebook analyzers currently feel like:
+
+* basic templates
+* generic dashboards
+* shallow AI analysis
+* reused YouTube layouts
+* static UI sections
+
+This is NOT what was requested.
+
+The platform is supposed to feel like a premium AI intelligence system.
+
+The analyzer must provide REAL VALUE and platform-specific insights.
+
+DO NOT create generic cards with generic recommendations.
+
+DO NOT show simplistic metrics and call it analysis.
+
+DO NOT reuse the same analysis logic for YouTube, Instagram, and Facebook.
+
+Each platform requires its own intelligence engine.
+
+---
+
+# INSTAGRAM ANALYZER 2.0 (MANDATORY)
+
+Instagram analysis must become dramatically deeper.
+
+Analyze:
+
+## Profile Identity
+
+Evaluate:
+
+* username quality
+* handle memorability
+* profile photo effectiveness
+* niche clarity
+* branding consistency
+
+Generate:
+
+### Username Improvement Suggestions
+
+Examples:
+
+Current:
+@fitnesslife2024
+
+Suggested:
+@fitwithalex
+@alexfitcoach
+
+Explain WHY.
+
+---
+
+## Bio Optimization Engine
+
+Analyze:
+
+* clarity
+* CTA strength
+* keyword usage
+* value proposition
+
+Generate:
+
+### Improved Bio Versions
+
+Provide:
+
+* Professional version
+* Personal brand version
+* Growth-focused version
+
+---
+
+## Profile Enhancement Suggestions
+
+AI should analyze:
+
+* profile image quality
+* profile branding
+* highlights organization
+
+Generate actionable recommendations.
+
+---
+
+## Content Intelligence
+
+Analyze recent content.
+
+Detect:
+
+* content pillars
+* dominant topics
+* weak topics
+* overused topics
+
+Show:
+
+### Content Mix Analysis
+
+Examples:
+
+* 40% educational
+* 25% promotional
+* 20% lifestyle
+* 15% engagement posts
+
+---
+
+## Reels Intelligence
+
+Analyze:
+
+* hooks
+* captions
+* posting consistency
+
+Generate:
+
+* reel score
+* hook score
+* viral probability score
+
+---
+
+## Caption Analyzer
+
+Evaluate:
+
+* engagement potential
+* readability
+* CTA quality
+
+Generate improved captions.
+
+---
+
+## Hashtag Intelligence
+
+Analyze:
+
+* relevance
+* competitiveness
+* discoverability
+
+Generate:
+
+* stronger hashtag groups
+* niche hashtag clusters
+
+---
+
+## Engagement Intelligence
+
+Detect:
+
+* declining engagement
+* strong content categories
+* audience preferences
+
+Generate reasons and actions.
+
+---
+
+# FACEBOOK ANALYZER 2.0
+
+Must NOT be a copy of Instagram.
+
+Analyze:
+
+## Page Branding
+
+Evaluate:
+
+* page title
+* page description
+* profile image
+* cover image
+
+Generate improvements.
+
+---
+
+## Content Analysis
+
+Analyze:
+
+* post formats
+* engagement patterns
+* posting schedule
+
+Generate:
+
+* best content types
+* recommended posting frequency
+
+---
+
+## Audience Engagement Analysis
+
+Evaluate:
+
+* comments
+* reactions
+* shares
+
+Generate:
+
+* engagement opportunities
+* interaction strategy
+
+---
+
+## Facebook Growth Roadmap
+
+Create:
+
+30 Day Plan
+
+60 Day Plan
+
+90 Day Plan
+
+with actionable steps.
+
+---
+
+# YOUTUBE ANALYZER IMPROVEMENTS
+
+The YouTube analyzer must go deeper.
+
+Add:
+
+## Channel Name Evaluation
+
+Analyze:
+
+* memorability
+* branding
+* niche relevance
+
+Suggest better naming options.
+
+---
+
+## Channel Branding Review
+
+Analyze:
+
+* logo
+* banner
+* description
+
+Generate recommendations.
+
+---
+
+## Thumbnail Intelligence
+
+For recent videos:
+
+Evaluate:
+
+* readability
+* curiosity
+* click potential
+
+Generate:
+
+* strengths
+* weaknesses
+* improvement ideas
+
+---
+
+## Title Optimization Engine
+
+For every recent video:
+
+Provide:
+
+Current Title
+
+Optimized Title
+
+Reasoning
+
+Expected Impact
+
+---
+
+## Channel Positioning Analysis
+
+Determine:
+
+* niche
+* audience type
+* creator positioning
+
+Provide strategic recommendations.
+
+---
+
+# AI RESPONSE CUSTOMIZATION CENTER
+
+The Settings Page is still too basic.
+
+This must become one of the most powerful pages in the application.
+
+---
+
+## AI Personality Controls
+
+Allow users to choose:
+
+### Strategic Consultant
+
+Professional and business-focused.
+
+### Growth Hacker
+
+Aggressive growth recommendations.
+
+### Branding Expert
+
+Brand-focused recommendations.
+
+### Content Coach
+
+Educational and supportive recommendations.
+
+### Data Analyst
+
+Numbers-first recommendations.
+
+---
+
+## AI Communication Style
+
+Allow users to choose:
+
+* Direct
+* Detailed
+* Executive Summary
+* Beginner Friendly
+* Advanced
+
+The AI must adapt ALL reports accordingly.
+
+---
+
+## AI Recommendation Depth
+
+Options:
+
+* Quick
+* Standard
+* Deep
+* Enterprise
+
+This affects analysis output length.
+
+---
+
+## AI Creativity Controls
+
+Slider:
+
+0 → 100
+
+Controls:
+
+* content ideas
+* title generation
+* caption generation
+
+---
+
+## AI Focus Areas
+
+Users choose:
+
+* Growth
+* Branding
+* Engagement
+* Monetization
+* Audience Building
+
+The AI prioritizes those goals.
+
+---
+
+# ADVANCED PRIVACY CENTER
+
+Create a dedicated privacy section.
+
+Include:
+
+## Data Controls
+
+* export account data
+* delete account
+* revoke platform connections
+
+---
+
+## Session Management
+
+Show:
+
+* active devices
+* login history
+* logout all devices
+
+---
+
+## Security Controls
+
+* 2FA support
+* password management
+* OAuth management
+
+---
+
+# VISUAL QUALITY DIRECTIVE (STRICT)
+
+The application still looks too template-like.
+
+This is unacceptable.
+
+The platform must feel premium.
+
+Required:
+
+## Animated Background System
+
+Create:
+
+* floating particles
+* animated gradients
+* subtle moving lights
+* ambient glow effects
+
+---
+
+## Glassmorphism
+
+Use:
+
+* blurred cards
+* depth layers
+* premium transparency
+
+---
+
+## Motion System
+
+Every page must contain:
+
+* entrance animations
+* staggered card animations
+* hover interactions
+* smooth transitions
+
+---
+
+## Premium Dashboard Feel
+
+Target quality level:
+
+* Linear
+* Vercel
+* Raycast
+* Arc Browser
+
+NOT generic admin dashboards.
+
+NOT Bootstrap-like layouts.
+
+NOT standard SaaS templates.
+
+---
+
+# FINAL REQUIREMENT
+
+The user should feel that this platform is:
+
+A professional AI consultant that audits and improves social media accounts.
+
+It must not feel like a statistics viewer.
+
+It must feel like an intelligence platform that provides valuable recommendations users would pay for monthly.
+
+Every page must feel premium.
+
+Every analysis must feel personalized.
+
+Every interaction must feel intentional.
+
+No generic cards.
+
+No placeholder recommendations.
+
+No template-driven outputs.
+
+No shallow analysis.

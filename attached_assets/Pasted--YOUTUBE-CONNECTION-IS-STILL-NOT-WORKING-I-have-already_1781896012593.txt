@@ -1,0 +1,132 @@
+# 🚨 YOUTUBE CONNECTION IS STILL NOT WORKING
+
+I have already signed in with Google.
+
+But:
+
+```http
+GET /api/connected/auto-detect-youtube
+```
+
+still returns:
+
+```json
+{
+  "error": "youtube_oauth_required",
+  "message": "Connect your YouTube channel to continue."
+}
+```
+
+So Google login itself is NOT the problem anymore.
+
+The problem is that the YouTube OAuth connection flow is not completing successfully.
+
+---
+
+# I NEED A ROOT CAUSE ANALYSIS
+
+Stop guessing.
+
+Trace the entire flow and tell me EXACTLY where it breaks.
+
+Verify:
+
+### 1. Does
+
+```http
+POST /api/youtube-oauth/start
+```
+
+generate a valid Google authorization URL?
+
+---
+
+### 2. Does Google redirect back correctly?
+
+Verify:
+
+* callback URL
+* authorization code
+* query parameters
+
+---
+
+### 3. Does
+
+```http
+POST /api/youtube-oauth/exchange
+```
+
+successfully exchange the code?
+
+Show proof.
+
+---
+
+### 4. Is a refresh token actually returned?
+
+Show:
+
+* access token existence
+* refresh token existence
+* expiry time
+
+---
+
+### 5. Is the refresh token being saved to the database?
+
+Verify:
+
+```text
+youtube_refresh_token
+youtube_token_expiry
+```
+
+and show their values are populated.
+
+---
+
+### 6. Can the stored refresh token successfully call:
+
+```js
+youtube.channels.list({
+  mine: true,
+  part: "snippet,statistics"
+})
+```
+
+Show the raw response.
+
+---
+
+# IF SOMETHING IS MISSING FROM MY SIDE, TELL ME.
+
+Do NOT guess.
+
+Tell me exactly what you need.
+
+Possible missing items:
+
+* GOOGLE_CLIENT_ID
+* GOOGLE_CLIENT_SECRET
+* YOUTUBE_API_KEY
+* Additional redirect URI
+* OAuth consent screen settings
+* Missing scope
+* Missing test users
+* Missing refresh token
+* Missing environment variable
+
+If any configuration or key is missing, stop and tell me exactly which one is needed.
+
+---
+
+# MOST IMPORTANT
+
+I already logged in with Google.
+
+So explain why the YouTube channel is still not connected.
+
+Find the exact failing step and fix it.
+
+Do not continue implementing anything else until YouTube connection works end-to-end.

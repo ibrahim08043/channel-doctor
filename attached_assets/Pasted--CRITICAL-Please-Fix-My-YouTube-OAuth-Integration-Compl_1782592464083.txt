@@ -1,0 +1,360 @@
+# CRITICAL: Please Fix My YouTube OAuth Integration Completely (No More Assumptions)
+
+I have been stuck on this YouTube OAuth issue for a long time and I need you to completely fix it from start to finish. Please do not make assumptions or tell me what "might" be wrong. I want you to investigate the actual code, trace every step, identify the root cause, and implement the fix.
+
+## Project Goal
+
+This SaaS has **two different authentication flows**:
+
+### Flow 1 (Google Login) - Automatic Connection
+
+When a user signs up or logs in using **Google OAuth**, their Google account should already have access to YouTube.
+
+Expected behavior:
+
+1. User clicks **Continue with Google**
+2. User logs in
+3. Backend detects that this Google account owns or manages YouTube channels
+4. The YouTube account is automatically connected
+5. Refresh token is stored
+6. Channel information is saved
+7. `/api/connected/auto-detect-youtube` succeeds
+8. User never needs to click another "Connect YouTube" button
+
+This is currently **NOT working**.
+
+---
+
+### Flow 2 (Email Login)
+
+When a user signs up with email/password:
+
+1. User logs in
+2. User clicks **Connect YouTube**
+3. Google OAuth opens
+4. User grants permission
+5. Callback executes
+6. Refresh token is stored
+7. Channel is connected
+8. Auto Detect succeeds
+
+This is also **NOT working**.
+
+---
+
+## Current Response
+
+Calling
+
+`GET /api/connected/auto-detect-youtube`
+
+returns
+
+```json
+{
+  "error": "youtube_oauth_required",
+  "message": "Connect your YouTube channel to continue."
+}
+```
+
+This means the backend still thinks there is **no valid YouTube OAuth connection**, even after trying both login methods.
+
+---
+
+## What I Need You To Do
+
+I do NOT want guesses.
+
+I want you to debug the **entire OAuth flow** from beginning to end.
+
+Verify every step.
+
+Trace every request.
+
+Inspect every token.
+
+Inspect every database write.
+
+Inspect every Clerk user.
+
+Inspect every session.
+
+Inspect every callback.
+
+Inspect every API.
+
+Inspect every redirect.
+
+Inspect every environment variable.
+
+Inspect every scope.
+
+Inspect every cookie.
+
+Inspect everything until you find the exact failure.
+
+---
+
+## Please Verify ALL of These
+
+### 1. Google Login
+
+Check whether Google Login is actually requesting YouTube scopes.
+
+If not:
+
+Fix it.
+
+Google Login should request the required YouTube permissions if automatic connection is expected.
+
+---
+
+### 2. OAuth Start Endpoint
+
+Verify:
+
+* route executes
+* auth middleware
+* Clerk session
+* user id
+* generated OAuth URL
+* state
+* callback URL
+* scopes
+* access_type
+* prompt
+
+---
+
+### 3. OAuth Callback
+
+Verify:
+
+* callback is reached
+* code received
+* state validated
+* Clerk user resolved
+* token exchange succeeds
+* refresh token exists
+* access token exists
+* expiry stored
+
+---
+
+### 4. Database
+
+Verify:
+
+* refresh token actually saves
+* access token saves
+* expiry saves
+* channel id saves
+* channel title saves
+* correct user record updates
+* nothing overwrites it later
+
+---
+
+### 5. Auto Detect Endpoint
+
+Trace
+
+`/api/connected/auto-detect-youtube`
+
+line by line.
+
+Show exactly why it returns
+
+```json
+youtube_oauth_required
+```
+
+Which condition fails?
+
+Which database field is missing?
+
+Which lookup fails?
+
+Which query returns null?
+
+Why?
+
+Fix it.
+
+---
+
+### 6. Google Login Auto Connection
+
+If user logs in with Google:
+
+Can we reuse Google's OAuth tokens?
+
+If yes:
+
+Implement it correctly.
+
+If no:
+
+Explain why.
+
+Then implement the proper industry-standard solution so Google users only authorize YouTube once.
+
+---
+
+### 7. Email Login Connection
+
+Verify the complete manual connection flow.
+
+If refresh token is missing:
+
+Find out why.
+
+Fix it.
+
+---
+
+### 8. OAuth Scopes
+
+Verify the app requests every required scope.
+
+---
+
+### 9. Refresh Tokens
+
+Verify Google is actually returning refresh tokens.
+
+If not:
+
+Determine why.
+
+Possible reasons include:
+
+* missing prompt=consent
+* missing access_type=offline
+* previously granted permissions
+* wrong scopes
+* incorrect OAuth configuration
+
+Find the real reason.
+
+---
+
+### 10. Google Cloud Configuration
+
+Verify everything required:
+
+* OAuth Client
+* Redirect URI
+* OAuth Consent Screen
+* Test Users
+* Publishing Status
+* YouTube Data API v3
+* Enabled APIs
+
+Don't assume.
+
+Verify.
+
+---
+
+### 11. Logging
+
+Add detailed logs for every step.
+
+I want to see:
+
+* request received
+* user id
+* generated URL
+* callback received
+* authorization code
+* token exchange
+* refresh token
+* database update
+* YouTube API response
+* detected channels
+* final response
+
+No silent failures.
+
+---
+
+### 12. Root Cause
+
+When finished I want ONE clear answer:
+
+"What exactly was broken?"
+
+Not possibilities.
+
+The actual reason.
+
+---
+
+### 13. Fix Everything
+
+Do not stop after identifying the bug.
+
+Implement the complete fix.
+
+Update backend.
+
+Update frontend if necessary.
+
+Update OAuth logic.
+
+Update token storage.
+
+Update auto detection.
+
+Update connection flow.
+
+Everything should work.
+
+---
+
+## If You Need Anything From Me
+
+Do NOT guess.
+
+If you need anything, ask me.
+
+For example:
+
+* Google Client ID
+* Google Client Secret
+* OAuth Client configuration
+* Redirect URI
+* OAuth Consent Screen screenshots
+* Test Users
+* Environment variables
+* Database schema
+* Clerk configuration
+* Replit Secrets
+* Google Cloud Console settings
+* Server logs
+* Browser Network logs
+* Frontend code
+* Backend code
+* API responses
+
+I have already provided almost every key previously, and I can provide anything else you need.
+
+If any credential, configuration, or setting is missing, tell me exactly what you need instead of making assumptions.
+
+---
+
+## IMPORTANT
+
+Please don't tell me:
+
+* "Maybe..."
+* "Possibly..."
+* "It could be..."
+* "You should verify..."
+
+I need you to actually inspect the project, trace the execution, identify the real root cause, and fix it.
+
+I have been fighting this issue for a long time and I'm honestly exhausted.
+
+Please stay with this issue until it is fully resolved.

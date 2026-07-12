@@ -1,0 +1,169 @@
+# 🚨 CRITICAL AUTHENTICATION AND YOUTUBE CONNECTION FIX
+
+STOP the current implementation immediately.
+
+The current "Connect YouTube Channel" flow is unacceptable.
+
+Users are receiving:
+
+* "This app is blocked"
+* "google_auth_required"
+* OAuth failures
+* Session reverification errors
+
+These issues create a terrible user experience.
+
+---
+
+# REQUIRED ARCHITECTURE
+
+There must NOT be two separate Google authentications.
+
+DO NOT:
+
+1. Login with Google.
+2. Ask users to connect Google again.
+3. Require another YouTube authorization step.
+
+THIS IS INVALID.
+
+---
+
+# GOOGLE LOGIN USERS
+
+If a user signs in or signs up using Google:
+
+### Automatically detect the Google account.
+
+### Automatically detect the associated YouTube channel.
+
+### Automatically fetch:
+
+* channel ID
+* channel title
+* channel avatar
+* subscriber count
+
+without showing a separate "Connect YouTube" button.
+
+The channel should be linked automatically.
+
+NO additional authorization flow should appear.
+
+NO second OAuth process should exist.
+
+---
+
+# EMAIL LOGIN USERS
+
+If a user logs in with:
+
+* email/password
+
+then show:
+
+### Connect YouTube Channel
+
+for those users only.
+
+---
+
+# AVOID "THIS APP IS BLOCKED"
+
+DO NOT use restricted OAuth scopes unnecessarily.
+
+DO NOT request sensitive permissions unless absolutely required.
+
+Prefer using:
+
+### youtube.readonly
+
+instead of broader scopes.
+
+Minimize requested permissions.
+
+---
+
+# FALLBACK SYSTEM
+
+If automatic channel detection fails:
+
+DO NOT crash.
+
+DO NOT show:
+
+"google_auth_required"
+
+or
+
+"Failed to connect".
+
+Instead show:
+
+"Your Google account is connected, but we could not automatically find a YouTube channel associated with this account."
+
+Provide:
+
+### Retry Detection
+
+and
+
+### Enter Channel URL Manually
+
+---
+
+# MANUAL CHANNEL LINKING (FALLBACK)
+
+If OAuth is problematic:
+
+Allow users to connect their own channel by:
+
+* Channel URL
+* @handle
+* Channel ID
+
+Validate ownership by:
+
+* comparing email account
+* channel metadata
+* optional verification flow
+
+without requiring another Google OAuth process.
+
+---
+
+# ABSOLUTE RULE
+
+For users who authenticated with Google:
+
+THERE MUST NEVER BE A SECOND GOOGLE CONNECTION STEP.
+
+Google Login = YouTube Auto Connection.
+
+This should work transparently.
+
+The user should simply login with Google and immediately see:
+
+"Your YouTube channel is connected."
+
+without pressing another button.
+
+---
+
+# ERROR MESSAGES
+
+Never return:
+
+* google_auth_required
+* no_google_oauth_connection
+* failed_to_connect
+
+Use descriptive messages and graceful fallbacks.
+
+---
+
+# PRIORITY
+
+Fix this issue before implementing any new features.
+
+Authentication and YouTube connection reliability are higher priority than all other functionality.

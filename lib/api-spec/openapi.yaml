@@ -1,0 +1,1108 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: Channel Doctor API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+  - name: channels
+  - name: ai
+  - name: connected
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /channels/search:
+    get:
+      operationId: searchChannels
+      tags: [channels]
+      summary: Search YouTube for channels by query (handle, URL, or name)
+      parameters:
+        - in: query
+          name: q
+          required: true
+          schema: { type: string, minLength: 1 }
+      responses:
+        "200":
+          description: Top results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChannelSearchResults"
+
+  /channels/{channelId}:
+    get:
+      operationId: getChannel
+      tags: [channels]
+      summary: Full channel snapshot (stats + recent videos + health)
+      parameters:
+        - in: path
+          name: channelId
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Channel details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChannelDetails"
+
+  /channels/{channelId}/analysis:
+    get:
+      operationId: analyzeChannel
+      tags: [channels]
+      summary: AI-powered diagnosis and growth strategy
+      parameters:
+        - in: path
+          name: channelId
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Analysis
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChannelAnalysis"
+
+  /ai/title-optimizer:
+    post:
+      operationId: optimizeTitle
+      tags: [ai]
+      summary: Generate 10 optimized YouTube titles
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TitleOptimizerBody"
+      responses:
+        "200":
+          description: Optimized titles
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TitleOptimizerResult"
+
+  /ai/thumbnail-ab:
+    post:
+      operationId: thumbnailAbTest
+      tags: [ai]
+      summary: Compare two thumbnails using AI vision
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ThumbnailAbBody"
+      responses:
+        "200":
+          description: Comparison
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThumbnailAbResult"
+
+  /ai/retention-mapper:
+    post:
+      operationId: retentionMapper
+      tags: [ai]
+      summary: Analyze a transcript for likely drop-off points
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RetentionBody"
+      responses:
+        "200":
+          description: Retention analysis
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RetentionResult"
+
+  /ai/content-ideas:
+    post:
+      operationId: generateContentIdeas
+      tags: [ai]
+      summary: Generate content ideas for a channel/topic
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContentIdeasBody"
+      responses:
+        "200":
+          description: Ideas
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContentIdeasResult"
+
+  /ai/why-failed:
+    post:
+      operationId: diagnoseVideo
+      tags: [ai]
+      summary: Diagnose why a specific video underperformed
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WhyFailedBody"
+      responses:
+        "200":
+          description: Diagnosis
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WhyFailedResult"
+
+  /connected/me:
+    get:
+      operationId: getConnectedProfile
+      tags: [connected]
+      summary: Get the signed-in user's connected channel + saved data
+      responses:
+        "200":
+          description: Profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConnectedProfile"
+
+  /connected/auto-detect-youtube:
+    post:
+      operationId: autoDetectYoutube
+      tags: [connected]
+      summary: Auto-detect and connect the authenticated user's YouTube channel via Google OAuth
+      responses:
+        "200":
+          description: Connected profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConnectedProfile"
+
+  /connected/connect:
+    delete:
+      operationId: unlinkChannel
+      tags: [connected]
+      summary: Disconnect the signed-in user's primary YouTube channel
+      responses:
+        "200":
+          description: Disconnected
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConnectedProfile"
+
+  /ai/analyze-social:
+    post:
+      operationId: analyzeSocial
+      tags: [ai]
+      summary: AI-powered Instagram or Facebook profile analysis
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SocialAnalyzeBody"
+      responses:
+        "200":
+          description: Analysis result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SocialAnalysisResult"
+
+  /reports/generate-social:
+    post:
+      operationId: generateSocialReport
+      tags: [ai]
+      summary: Generate a consulting-style DOCX report for Instagram or Facebook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SocialReportRequest"
+      responses:
+        "200":
+          description: DOCX report
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenerateReportResult"
+
+  /reports/generate:
+    post:
+      operationId: generateReport
+      tags: [ai]
+      summary: Generate a consulting-style DOCX report for a channel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportGenRequest"
+      responses:
+        "200":
+          description: DOCX report as base64
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenerateReportResult"
+
+  /ai/chat:
+    post:
+      operationId: aiChat
+      tags: [ai]
+      summary: Conversational AI growth coach
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AiChatRequest"
+      responses:
+        "200":
+          description: Reply
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AiChatResult"
+
+  /channels/{channelId}/content-plan:
+    get:
+      operationId: getContentPlan
+      tags: [channels]
+      summary: AI weekly upload schedule for a channel
+      parameters:
+        - in: path
+          name: channelId
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Plan
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContentPlanResult"
+
+  /channels/{channelId}/forecast:
+    get:
+      operationId: getForecast
+      tags: [channels]
+      summary: 30-day growth forecast
+      parameters:
+        - in: path
+          name: channelId
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Forecast
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForecastResult"
+
+  /connected/stats:
+    get:
+      operationId: getUserStats
+      tags: [connected]
+      summary: User stats and achievements
+      responses:
+        "200":
+          description: Stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserStatsResult"
+
+  /channels/{channelId}/video-breakdown:
+    get:
+      operationId: getVideoBreakdown
+      tags: [channels]
+      summary: AI breakdown of recent videos (title score, hook, CTR estimate)
+      parameters:
+        - in: path
+          name: channelId
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Video breakdown
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VideoBreakdownResult"
+
+  /channels/{channelId}/competitors:
+    get:
+      operationId: compareCompetitors
+      tags: [channels]
+      summary: Find similar channels and AI-compare
+      parameters:
+        - in: path
+          name: channelId
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Competitors comparison
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompetitorsResult"
+
+  /connected/alerts:
+    get:
+      operationId: listAlerts
+      tags: [connected]
+      summary: Computed growth alerts for the signed-in user's channel
+      responses:
+        "200":
+          description: Alerts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AlertsResult"
+
+  /connected/saved-analyses:
+    get:
+      operationId: listSavedAnalyses
+      tags: [connected]
+      summary: List previously run analyses for the signed-in user
+      responses:
+        "200":
+          description: Saved analyses
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SavedAnalysisList"
+    post:
+      operationId: createSavedAnalysis
+      tags: [connected]
+      summary: Run and save an analysis for a channel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConnectChannelBody"
+      responses:
+        "200":
+          description: Saved analysis created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SavedAnalysis"
+
+  /connected/saved-analyses/{id}:
+    delete:
+      operationId: deleteSavedAnalysis
+      tags: [connected]
+      summary: Delete a saved analysis by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "204":
+          description: Deleted
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status: { type: string }
+      required: [status]
+
+    ChannelSearchResult:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+        thumbnail: { type: string }
+        description: { type: string }
+        customUrl: { type: string, nullable: true }
+      required: [id, title, thumbnail, description]
+
+    ChannelSearchResults:
+      type: object
+      properties:
+        results:
+          type: array
+          items: { $ref: "#/components/schemas/ChannelSearchResult" }
+      required: [results]
+
+    VideoSummary:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+        thumbnail: { type: string }
+        publishedAt: { type: string }
+        durationSeconds: { type: integer }
+        views: { type: integer }
+        likes: { type: integer }
+        comments: { type: integer }
+      required: [id, title, thumbnail, publishedAt, durationSeconds, views, likes, comments]
+
+    ViewTrendPoint:
+      type: object
+      properties:
+        date: { type: string }
+        views: { type: integer }
+        videoId: { type: string }
+      required: [date, views, videoId]
+
+    UploadCadencePoint:
+      type: object
+      properties:
+        weekStart: { type: string }
+        uploads: { type: integer }
+      required: [weekStart, uploads]
+
+    BestPostingHour:
+      type: object
+      properties:
+        dayOfWeek: { type: integer }
+        hour: { type: integer }
+      required: [dayOfWeek, hour]
+
+    HealthBreakdown:
+      type: object
+      properties:
+        engagement: { type: number }
+        consistency: { type: number }
+        growth: { type: number }
+        performance: { type: number }
+      required: [engagement, consistency, growth, performance]
+
+    ChannelDetails:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+        description: { type: string }
+        thumbnail: { type: string }
+        bannerUrl: { type: string, nullable: true }
+        country: { type: string, nullable: true }
+        publishedAt: { type: string }
+        subscriberCount: { type: integer }
+        hiddenSubscriberCount: { type: boolean }
+        viewCount: { type: integer }
+        videoCount: { type: integer }
+        avgViews: { type: integer }
+        medianViews: { type: integer }
+        uploadCadencePerWeek: { type: number }
+        engagementRate: { type: number }
+        growthRatio: { type: number }
+        viewsPerSubRatio: { type: number }
+        bestPostingHour: { $ref: "#/components/schemas/BestPostingHour" }
+        healthScore: { type: number }
+        healthStatus: { type: string, enum: [critical, warning, healthy, thriving] }
+        healthBreakdown: { $ref: "#/components/schemas/HealthBreakdown" }
+        recentVideos:
+          type: array
+          items: { $ref: "#/components/schemas/VideoSummary" }
+        viewTrend:
+          type: array
+          items: { $ref: "#/components/schemas/ViewTrendPoint" }
+        uploadCadence:
+          type: array
+          items: { $ref: "#/components/schemas/UploadCadencePoint" }
+      required: [id, title, description, thumbnail, publishedAt, subscriberCount, hiddenSubscriberCount, viewCount, videoCount, avgViews, medianViews, uploadCadencePerWeek, engagementRate, growthRatio, viewsPerSubRatio, bestPostingHour, healthScore, healthStatus, healthBreakdown, recentVideos, viewTrend, uploadCadence]
+
+    NextAction:
+      type: object
+      properties:
+        priority: { type: string, enum: [high, medium, low] }
+        action: { type: string }
+        impact: { type: string }
+      required: [priority, action, impact]
+
+    ChannelAnalysis:
+      type: object
+      properties:
+        channelId: { type: string }
+        healthScore: { type: number }
+        healthStatus: { type: string }
+        diagnosis: { type: string }
+        strengths:
+          type: array
+          items: { type: string }
+        weaknesses:
+          type: array
+          items: { type: string }
+        opportunities:
+          type: array
+          items: { type: string }
+        nextActions:
+          type: array
+          items: { $ref: "#/components/schemas/NextAction" }
+        contentNiche: { type: string }
+        audienceInsight: { type: string }
+      required: [channelId, healthScore, healthStatus, diagnosis, strengths, weaknesses, opportunities, nextActions, contentNiche, audienceInsight]
+
+    TitleOptimizerBody:
+      type: object
+      properties:
+        currentTitle: { type: string, nullable: true }
+        topic: { type: string, nullable: true }
+        channelTitle: { type: string, nullable: true }
+        audience: { type: string, nullable: true }
+
+    OptimizedTitle:
+      type: object
+      properties:
+        title: { type: string }
+        ctrScore: { type: number }
+        reasoning: { type: string }
+        style: { type: string }
+      required: [title, ctrScore, reasoning, style]
+
+    TitleOptimizerResult:
+      type: object
+      properties:
+        titles:
+          type: array
+          items: { $ref: "#/components/schemas/OptimizedTitle" }
+        analysis: { type: string }
+      required: [titles, analysis]
+
+    ThumbnailAbBody:
+      type: object
+      properties:
+        thumbnailA: { type: string }
+        thumbnailB: { type: string }
+        title: { type: string, nullable: true }
+      required: [thumbnailA, thumbnailB]
+
+    ThumbnailScoreBreakdown:
+      type: object
+      properties:
+        thumbnail: { type: string, enum: [A, B] }
+        ctrScore: { type: number }
+        clarity: { type: number }
+        emotion: { type: number }
+        contrast: { type: number }
+        textReadability: { type: number }
+        notes: { type: string }
+      required: [thumbnail, ctrScore, clarity, emotion, contrast, textReadability, notes]
+
+    ThumbnailAbResult:
+      type: object
+      properties:
+        winner: { type: string, enum: [A, B, tie] }
+        confidence: { type: number }
+        analysis: { type: string }
+        breakdown:
+          type: array
+          items: { $ref: "#/components/schemas/ThumbnailScoreBreakdown" }
+      required: [winner, confidence, analysis, breakdown]
+
+    RetentionBody:
+      type: object
+      properties:
+        videoId: { type: string, nullable: true }
+        title: { type: string, nullable: true }
+        durationSeconds: { type: number, nullable: true }
+
+    RetentionCurvePoint:
+      type: object
+      properties:
+        secondsIn: { type: integer }
+        estimatedRetentionPct: { type: number }
+      required: [secondsIn, estimatedRetentionPct]
+
+    RetentionDropoff:
+      type: object
+      properties:
+        startSec: { type: integer }
+        endSec: { type: integer }
+        severity: { type: string, enum: [minor, major, critical] }
+        cause: { type: string }
+        fix: { type: string }
+      required: [startSec, endSec, severity, cause, fix]
+
+    RetentionResult:
+      type: object
+      properties:
+        summary: { type: string }
+        curve:
+          type: array
+          items: { $ref: "#/components/schemas/RetentionCurvePoint" }
+        dropoffs:
+          type: array
+          items: { $ref: "#/components/schemas/RetentionDropoff" }
+        hookAdvice: { type: string }
+      required: [summary, curve, dropoffs, hookAdvice]
+
+    ContentIdeasBody:
+      type: object
+      properties:
+        topic: { type: string, minLength: 1 }
+        channelTitle: { type: string, nullable: true }
+        audience: { type: string, nullable: true }
+      required: [topic]
+
+    ContentIdea:
+      type: object
+      properties:
+        title: { type: string }
+        hook: { type: string }
+        format: { type: string }
+        why: { type: string }
+      required: [title, hook, format, why]
+
+    ContentIdeasResult:
+      type: object
+      properties:
+        ideas:
+          type: array
+          items: { $ref: "#/components/schemas/ContentIdea" }
+      required: [ideas]
+
+    WhyFailedBody:
+      type: object
+      properties:
+        videoId: { type: string, minLength: 1 }
+        channelId: { type: string, nullable: true }
+      required: [videoId]
+
+    WhyFailedReason:
+      type: object
+      properties:
+        category: { type: string }
+        severity: { type: string, enum: [minor, major, critical] }
+        explanation: { type: string }
+      required: [category, severity, explanation]
+
+    WhyFailedFix:
+      type: object
+      properties:
+        action: { type: string }
+        impact: { type: string }
+      required: [action, impact]
+
+    WhyFailedResult:
+      type: object
+      properties:
+        verdict: { type: string }
+        gapVsAverage: { type: number }
+        reasons:
+          type: array
+          items: { $ref: "#/components/schemas/WhyFailedReason" }
+        fixes:
+          type: array
+          items: { $ref: "#/components/schemas/WhyFailedFix" }
+        titleAlternatives:
+          type: array
+          items: { type: string }
+      required: [verdict, gapVsAverage, reasons, fixes, titleAlternatives]
+
+    ConnectedProfile:
+      type: object
+      properties:
+        id: { type: string }
+        email: { type: string, nullable: true }
+        name: { type: string, nullable: true }
+        avatar: { type: string, nullable: true }
+        channelId: { type: string, nullable: true }
+        channelTitle: { type: string, nullable: true }
+        channelThumbnail: { type: string, nullable: true }
+        plan: { type: string }
+      required: [id, plan]
+
+    ConnectChannelBody:
+      type: object
+      properties:
+        channelId: { type: string, minLength: 1 }
+      required: [channelId]
+
+    SavedAnalysis:
+      type: object
+      properties:
+        id: { type: string }
+        channelId: { type: string }
+        channelTitle: { type: string }
+        channelThumbnail: { type: string }
+        healthScore: { type: number }
+        diagnosis: { type: string }
+        createdAt: { type: string }
+      required: [id, channelId, channelTitle, channelThumbnail, healthScore, diagnosis, createdAt]
+
+    SavedAnalysisList:
+      type: object
+      properties:
+        items:
+          type: array
+          items: { $ref: "#/components/schemas/SavedAnalysis" }
+      required: [items]
+
+    VideoBreakdownItem:
+      type: object
+      properties:
+        videoId: { type: string }
+        title: { type: string }
+        thumbnail: { type: string }
+        views: { type: integer }
+        publishedAt: { type: string }
+        titleScore: { type: number }
+        thumbnailCritique: { type: string }
+        hookStrength: { type: string, enum: [weak, ok, strong] }
+        ctrCategory: { type: string, enum: [low, average, high, viral] }
+        verdict: { type: string }
+      required: [videoId, title, thumbnail, views, publishedAt, titleScore, thumbnailCritique, hookStrength, ctrCategory, verdict]
+
+    VideoBreakdownResult:
+      type: object
+      properties:
+        items:
+          type: array
+          items: { $ref: "#/components/schemas/VideoBreakdownItem" }
+      required: [items]
+
+    CompetitorChannel:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+        thumbnail: { type: string }
+        subscriberCount: { type: integer }
+        viewCount: { type: integer }
+        videoCount: { type: integer }
+        avgViews: { type: integer }
+        uploadsPerWeek: { type: number }
+        engagementRate: { type: number }
+      required: [id, title, thumbnail, subscriberCount, viewCount, videoCount, avgViews, uploadsPerWeek, engagementRate]
+
+    CompetitorsResult:
+      type: object
+      properties:
+        competitors:
+          type: array
+          items: { $ref: "#/components/schemas/CompetitorChannel" }
+        comparison: { type: string }
+        advantages:
+          type: array
+          items: { type: string }
+        gaps:
+          type: array
+          items: { type: string }
+      required: [competitors, comparison, advantages, gaps]
+
+    Alert:
+      type: object
+      properties:
+        id: { type: string }
+        severity: { type: string, enum: [info, warning, critical] }
+        title: { type: string }
+        description: { type: string }
+        action: { type: string }
+      required: [id, severity, title, description, action]
+
+    AlertsResult:
+      type: object
+      properties:
+        alerts:
+          type: array
+          items: { $ref: "#/components/schemas/Alert" }
+      required: [alerts]
+
+    SocialAnalyzeBody:
+      type: object
+      properties:
+        platform: { type: string, enum: [instagram, facebook] }
+        handle: { type: string }
+        personality: { type: string }
+        style: { type: string }
+        depth: { type: string }
+        creativity: { type: integer }
+        focusAreas:
+          type: array
+          items: { type: string }
+      required: [platform, handle]
+
+    SocialScoreCategory:
+      type: object
+      properties:
+        name: { type: string }
+        score: { type: integer }
+        notes: { type: string }
+      required: [name, score, notes]
+
+    SocialStrategy:
+      type: object
+      properties:
+        title: { type: string }
+        reason: { type: string }
+        impact: { type: string }
+        steps:
+          type: array
+          items: { type: string }
+      required: [title, reason, impact, steps]
+
+    SocialReportRequest:
+      type: object
+      properties:
+        analysis:
+          $ref: "#/components/schemas/SocialAnalysisResult"
+      required: [analysis]
+
+    SocialUsernameAlt:
+      type: object
+      properties:
+        handle: { type: string }
+        reason: { type: string }
+      required: [handle, reason]
+
+    SocialBioVersion:
+      type: object
+      properties:
+        type: { type: string }
+        bio: { type: string }
+        reasoning: { type: string }
+      required: [type, bio, reasoning]
+
+    SocialContentPillar:
+      type: object
+      properties:
+        name: { type: string }
+        percentage: { type: integer }
+        strength: { type: string }
+      required: [name, percentage, strength]
+
+    SocialHashtagCluster:
+      type: object
+      properties:
+        name: { type: string }
+        hashtags:
+          type: array
+          items: { type: string }
+        strength: { type: string }
+      required: [name, hashtags, strength]
+
+    SocialRoadmapPhase:
+      type: object
+      properties:
+        focus: { type: string }
+        actions:
+          type: array
+          items: { type: string }
+        kpis:
+          type: array
+          items: { type: string }
+      required: [focus, actions]
+
+    InstagramInsights:
+      type: object
+      properties:
+        usernameScore: { type: integer }
+        usernameAlts:
+          type: array
+          items: { $ref: "#/components/schemas/SocialUsernameAlt" }
+        profileBrandingScore: { type: integer }
+        profileNotes: { type: string }
+        bioScore: { type: integer }
+        bioIssues:
+          type: array
+          items: { type: string }
+        bioVersions:
+          type: array
+          items: { $ref: "#/components/schemas/SocialBioVersion" }
+        contentPillars:
+          type: array
+          items: { $ref: "#/components/schemas/SocialContentPillar" }
+        weakTopics:
+          type: array
+          items: { type: string }
+        overusedTopics:
+          type: array
+          items: { type: string }
+        reelScore: { type: integer }
+        hookScore: { type: integer }
+        viralProbability: { type: integer }
+        reelRecommendations:
+          type: array
+          items: { type: string }
+        captionScore: { type: integer }
+        improvedCaptions:
+          type: array
+          items: { type: string }
+        hashtagScore: { type: integer }
+        hashtagClusters:
+          type: array
+          items: { $ref: "#/components/schemas/SocialHashtagCluster" }
+        engagementTrend: { type: string }
+        strongCategories:
+          type: array
+          items: { type: string }
+        engagementActions:
+          type: array
+          items: { type: string }
+      required: [usernameScore, usernameAlts, profileBrandingScore, profileNotes, bioScore, bioIssues, bioVersions, contentPillars, weakTopics, overusedTopics, reelScore, hookScore, viralProbability, reelRecommendations, captionScore, improvedCaptions, hashtagScore, hashtagClusters, engagementTrend, strongCategories, engagementActions]
+
+    FacebookInsights:
+      type: object
+      properties:
+        pageTitleScore: { type: integer }
+        pageDescScore: { type: integer }
+        brandingImprovements:
+          type: array
+          items: { type: string }
+        bestFormats:
+          type: array
+          items: { type: string }
+        recommendedFrequency: { type: string }
+        topPostTypes:
+          type: array
+          items: { type: string }
+        engagementOpportunities:
+          type: array
+          items: { type: string }
+        interactionStrategy: { type: string }
+        roadmap30: { $ref: "#/components/schemas/SocialRoadmapPhase" }
+        roadmap60: { $ref: "#/components/schemas/SocialRoadmapPhase" }
+        roadmap90: { $ref: "#/components/schemas/SocialRoadmapPhase" }
+      required: [pageTitleScore, pageDescScore, brandingImprovements, bestFormats, recommendedFrequency, topPostTypes, engagementOpportunities, interactionStrategy, roadmap30, roadmap60, roadmap90]
+
+    SocialAnalysisResult:
+      type: object
+      properties:
+        platform: { type: string }
+        handle: { type: string }
+        overallScore: { type: integer }
+        headline: { type: string }
+        summary: { type: string }
+        categories:
+          type: array
+          items: { $ref: "#/components/schemas/SocialScoreCategory" }
+        strategies:
+          type: array
+          items: { $ref: "#/components/schemas/SocialStrategy" }
+        quickWins:
+          type: array
+          items: { type: string }
+        disclaimer: { type: string }
+        instagramInsights: { $ref: "#/components/schemas/InstagramInsights" }
+        facebookInsights: { $ref: "#/components/schemas/FacebookInsights" }
+      required: [platform, handle, overallScore, headline, summary, categories, strategies, quickWins, disclaimer]
+
+    ReportGenRequest:
+      type: object
+      properties:
+        channelId: { type: string }
+        platform: { type: string }
+        creatorName: { type: string }
+      required: [channelId]
+
+    GenerateReportResult:
+      type: object
+      properties:
+        docxBase64: { type: string }
+        filename: { type: string }
+      required: [docxBase64, filename]
+
+    AiChatMessage:
+      type: object
+      properties:
+        role: { type: string, enum: [user, assistant] }
+        content: { type: string }
+      required: [role, content]
+
+    AiChatRequest:
+      type: object
+      properties:
+        message: { type: string }
+        channelId: { type: string }
+        history:
+          type: array
+          items: { $ref: "#/components/schemas/AiChatMessage" }
+      required: [message]
+
+    AiChatResult:
+      type: object
+      properties:
+        reply: { type: string }
+      required: [reply]
+
+    PlanDay:
+      type: object
+      properties:
+        day: { type: string }
+        topic: { type: string }
+        format: { type: string }
+        hook: { type: string }
+        why: { type: string }
+      required: [day, topic, format, hook, why]
+
+    ContentPlanResult:
+      type: object
+      properties:
+        cadenceAdvice: { type: string }
+        schedule:
+          type: array
+          items: { $ref: "#/components/schemas/PlanDay" }
+      required: [cadenceAdvice, schedule]
+
+    ForecastResult:
+      type: object
+      properties:
+        projectedSubs30d: { type: integer }
+        projectedViews30d: { type: integer }
+        confidence: { type: string, enum: [low, medium, high] }
+        summary: { type: string }
+        drivers:
+          type: array
+          items: { type: string }
+        risks:
+          type: array
+          items: { type: string }
+      required: [projectedSubs30d, projectedViews30d, confidence, summary, drivers, risks]
+
+    Achievement:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        description: { type: string }
+        unlocked: { type: boolean }
+        icon: { type: string }
+      required: [id, name, description, unlocked, icon]
+
+    UserStatsResult:
+      type: object
+      properties:
+        analysesRun: { type: integer }
+        savedReports: { type: integer }
+        channelConnected: { type: boolean }
+        joinedAt: { type: string }
+        achievements:
+          type: array
+          items: { $ref: "#/components/schemas/Achievement" }
+      required: [analysesRun, savedReports, channelConnected, joinedAt, achievements]

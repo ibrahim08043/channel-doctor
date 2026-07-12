@@ -1,0 +1,157 @@
+# 🚨 STOP WASTING TIME. THIS ISSUE IS NOT RESOLVED.
+
+The endpoint:
+
+```http
+GET /api/connected/auto-detect-youtube
+```
+
+is STILL returning:
+
+```json
+{
+  "error": "youtube_scope_required",
+  "message": "YouTube access not authorized. Please re-authorize with Google and grant YouTube permissions when prompted."
+}
+```
+
+This response is NOT a fix.
+
+Repeating the same message over and over is unacceptable.
+
+STOP giving fallback messages.
+
+STOP telling me to reauthorize.
+
+STOP pretending the issue is solved.
+
+FIND THE ROOT CAUSE.
+
+---
+
+# I NEED A REAL DIAGNOSIS
+
+If something is missing from MY side, then explicitly tell me.
+
+DO NOT guess.
+
+Tell me exactly which of these are missing or misconfigured:
+
+### Google OAuth Client ID
+
+### Google OAuth Client Secret
+
+### Redirect URI
+
+### YouTube Data API v3 enabled
+
+### Missing scopes
+
+### Clerk Google provider settings
+
+### Missing refresh token
+
+### Missing access token
+
+### Environment variables
+
+### OAuth consent screen configuration
+
+### Test users configuration
+
+### Google Cloud project restrictions
+
+If any of these are missing, STOP and tell me exactly what I need to provide.
+
+---
+
+# DO NOT SAY "NO"
+
+Actually verify:
+
+### Frontend login flow
+
+### Clerk external accounts
+
+### Session token retrieval
+
+### Backend token extraction
+
+### Google provider configuration
+
+### OAuth callback
+
+### Access token scopes
+
+### YouTube API initialization
+
+---
+
+# I WANT PROOF
+
+Print:
+
+### access token existence
+
+### refresh token existence
+
+### granted scopes
+
+### authenticated Google email
+
+### response from:
+
+```js
+youtube.channels.list({
+  mine: true,
+  part: "snippet,statistics"
+})
+```
+
+Show logs.
+
+Show the exact failing step.
+
+---
+
+# ABSOLUTE REQUIREMENT
+
+If the issue is caused by something missing from my side, DO NOT keep trying random fixes.
+
+STOP immediately and tell me:
+
+"These are the credentials, environment variables, APIs, or Google Cloud settings that are missing."
+
+---
+
+# DO NOT HIDE THE PROBLEM.
+
+DO NOT LOOP FOREVER.
+
+DO NOT RETURN:
+
+```json
+{
+  "error": "youtube_scope_required"
+}
+```
+
+again and again.
+
+That is NOT a solution.
+
+Either:
+
+1. Fix the code.
+
+OR
+
+2. Tell me EXACTLY what is missing from my configuration.
+
+No more guessing.
+
+No more placeholder fixes.
+
+No more wasted time.
+
+Trace the issue completely and identify the exact root cause before doing anything else.

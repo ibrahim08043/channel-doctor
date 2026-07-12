@@ -1,0 +1,360 @@
+Build a FULLY FUNCTIONAL, PRODUCTION-READY full-stack SaaS web app called:
+
+"Channel Doctor" — an AI-powered YouTube growth consultant dashboard.
+
+⚠️ THIS PROJECT IS GOING DIRECTLY TO A CLIENT.
+⚠️ THERE IS ZERO TOLERANCE FOR BROKEN FEATURES, PLACEHOLDERS, OR UNFINISHED LOGIC.
+⚠️ EVERYTHING MUST WORK PERFECTLY END-TO-END.
+
+DO NOT:
+- add mock data
+- leave incomplete features
+- create non-functional UI elements
+- skip backend logic
+- return vague or generic responses
+
+EVERYTHING MUST BE:
+- real
+- tested
+- connected
+- production-grade
+
+-----------------------------------
+TECH STACK
+-----------------------------------
+
+Frontend:
+- React (Vite)
+- Tailwind CSS
+- Axios
+- React Router DOM (STRICT routing)
+- Chart.js
+- Framer Motion (MANDATORY for animations)
+
+Backend:
+- Node.js + Express
+- Prisma ORM
+
+Database:
+- PostgreSQL
+
+Auth:
+- JWT (email/password)
+- Google OAuth 2.0 (FULLY WORKING — REQUIRED)
+
+APIs:
+- YouTube Data API v3
+- OpenAI API
+
+-----------------------------------
+🔥 NON-NEGOTIABLE ENGINEERING RULES
+-----------------------------------
+
+- NO BROKEN ROUTES — routing must be flawless
+- NO FAILING APIs — every endpoint must return valid JSON
+- NO GENERIC ERROR MESSAGES
+- NO "Failed to..." vague responses
+- EVERY API must:
+  - validate input
+  - handle edge cases
+  - return structured responses
+  - log errors properly
+
+- ALL async code must use try/catch
+- FRONTEND must handle:
+  - loading states
+  - error states
+  - empty states
+
+-----------------------------------
+🔥 CLIENT-LEVEL UI/UX REQUIREMENTS (VERY IMPORTANT)
+-----------------------------------
+
+This MUST look like a premium SaaS product.
+
+- Modern dashboard UI
+- Beautiful layouts
+- Clean spacing & typography
+- Dark mode (default)
+
+MANDATORY:
+- Smooth animations using Framer Motion
+- Page transitions
+- Hover effects
+- Loading skeletons
+- Micro-interactions
+
+EVERY PAGE MUST:
+- feel alive
+- be detailed
+- have purpose
+- include real data
+
+NO EMPTY SCREENS.
+NO BASIC UI.
+
+-----------------------------------
+AUTH SYSTEM (FIXED + COMPLETE)
+-----------------------------------
+
+Email Auth:
+- Signup
+- Login
+- Password hashing (bcrypt)
+- JWT authentication
+
+Google Auth (MANDATORY):
+- Fully working OAuth 2.0 flow
+- Login + Signup via Google
+- Store:
+  - email
+  - name
+  - avatar
+  - YouTube channel ID (if available)
+
+CRITICAL:
+- Fix routing issues completely
+- No redirect bugs
+- No auth state glitches
+- Persistent login (localStorage or cookies)
+
+Protected Routes:
+- Dashboard
+- Connected Channel
+
+-----------------------------------
+DUAL ANALYSIS MODE
+-----------------------------------
+
+A. Public Channel Analyzer (NO LOGIN)
+
+Input:
+- @handle
+- URL
+- name
+
+Output:
+- channel stats
+- AI diagnosis
+- growth strategy
+
+ALWAYS show disclaimer:
+"This analysis is based on public data and estimated metrics."
+
+-----------------------------------
+
+B. Connected Channel (OAuth)
+
+- Google login
+- Fetch deeper analytics
+- Unlock:
+  - CTR
+  - retention
+  - advanced AI insights
+
+-----------------------------------
+🔥 CRITICAL: CHANNEL RESOLUTION SYSTEM
+-----------------------------------
+
+MUST BE ROBUST — NO FAILURES.
+
+- Detect input type
+- Handle:
+  - URLs
+  - @handles
+  - names
+
+- Use:
+  - search.list
+  - channels.list
+  - parsing logic
+
+MANDATORY:
+- Show top 5 results
+- USER MUST SELECT channel
+- NEVER auto-select
+
+Validation:
+- channel exists
+- has videos
+
+If failure:
+"We couldn't reliably identify this channel. Try a more specific name or paste the URL."
+
+-----------------------------------
+🔥 CRITICAL: AI ANALYSIS API (MUST NOT FAIL)
+-----------------------------------
+
+Endpoint:
+`/api/channels/:channelId/analysis`
+
+CURRENT ISSUE:
+Returns:
+{ "error": "Failed to analyze channel" }
+
+THIS MUST BE COMPLETELY FIXED.
+
+-----------------------------------
+STRICT IMPLEMENTATION RULES
+-----------------------------------
+
+1. Validate channelId
+2. Fetch channel + videos safely
+3. Handle:
+   - empty videos
+   - API failures
+   - rate limits
+
+4. OpenAI call MUST:
+   - be inside try/catch
+   - never crash API
+
+5. If AI fails:
+RETURN FALLBACK:
+
+{
+  "diagnosis": "AI analysis temporarily unavailable",
+  "suggestions": ["Improve title clarity", "Use stronger thumbnails"]
+}
+
+6. NEVER return vague error messages
+
+7. ALWAYS return structured data
+
+-----------------------------------
+OPENAI PROMPT (STRICT QUALITY)
+-----------------------------------
+
+"You are a professional YouTube growth strategist. Give highly specific, data-driven, actionable advice. Avoid generic tips."
+
+Must analyze:
+- video performance
+- titles
+- consistency
+- engagement
+
+Output:
+- clear diagnosis
+- exact mistakes
+- precise improvements
+
+-----------------------------------
+FEATURES (EXPAND + MAXIMIZE)
+-----------------------------------
+
+You MUST implement as many RELEVANT features as possible:
+
+- Channel Health Score
+- Video performance breakdown
+- Upload consistency tracker
+- Best posting time suggestions
+- Competitor comparison (if possible)
+- Growth trend charts
+- Engagement insights
+- AI content ideas generator
+- Title optimizer
+- Thumbnail analyzer
+- Retention mapper
+- "Why video failed" analyzer
+
+ALL FEATURES MUST WORK.
+
+NO PLACEHOLDERS.
+
+-----------------------------------
+THUMBNAIL A/B TESTER
+-----------------------------------
+
+- Upload 2 images
+- AI analysis:
+  - contrast
+  - faces
+  - readability
+
+Return:
+- winner
+- reasoning
+- improvements
+
+-----------------------------------
+TITLE OPTIMIZER
+-----------------------------------
+
+- Input: title + topic
+- Output: 10 optimized titles
+
+-----------------------------------
+RETENTION MAPPER
+-----------------------------------
+
+- Input: transcript
+- Output:
+  - drop-offs
+  - fixes
+
+-----------------------------------
+SMART ESTIMATION SYSTEM
+-----------------------------------
+
+When no private data:
+
+Estimate:
+- CTR
+- retention
+
+Label clearly:
+"Estimated"
+
+-----------------------------------
+STRIPE MONETIZATION
+-----------------------------------
+
+- Free tier (limited)
+- Pro tier (full access)
+
+-----------------------------------
+PERFORMANCE
+-----------------------------------
+
+- debounce input (300ms)
+- caching
+- no duplicate API calls
+
+-----------------------------------
+ERROR HANDLING (STRICT)
+-----------------------------------
+
+Backend:
+- structured JSON errors
+- logging
+
+Frontend:
+- toast notifications
+- retry options
+
+-----------------------------------
+🔥 FINAL WARNING (VERY IMPORTANT)
+-----------------------------------
+
+THIS PROJECT IS CLIENT-FACING.
+
+- EVERYTHING MUST WORK
+- EVERYTHING MUST LOOK PREMIUM
+- EVERYTHING MUST BE COMPLETE
+
+NO:
+- broken APIs
+- unfinished features
+- weak UI
+- missing flows
+
+YES:
+- polished UI
+- smooth animations
+- strong backend
+- real AI insights
+
+-----------------------------------
+
+GOAL:
+Deliver a COMPLETE, SCALABLE, BEAUTIFUL SaaS PRODUCT ready for real users.

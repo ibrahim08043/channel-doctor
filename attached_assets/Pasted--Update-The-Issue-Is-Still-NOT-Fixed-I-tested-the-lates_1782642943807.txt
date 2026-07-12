@@ -1,0 +1,140 @@
+## Update: The Issue Is Still NOT Fixed
+
+I tested the latest changes and the problem still exists. The YouTube channel is **not connecting** from the Connect page.
+
+### Current Behavior
+
+When I go to the **Connect** page and try to connect YouTube, it still fails.
+
+The backend is still returning:
+
+```text
+POST /api/connected/auto-detect-youtube
+403 Forbidden
+```
+
+The logs clearly show:
+
+```text
+[auto-detect] ── START ──
+channelId: null
+youtubeRefreshToken: null
+channelTitle: null
+
+Clerk Google token scopes:
+email
+userinfo.email
+userinfo.profile
+openid
+profile
+
+has youtube: false
+```
+
+So nothing has changed.
+
+The database still contains:
+
+* channelId = null
+* youtubeRefreshToken = null
+* channelTitle = null
+
+which means the OAuth flow is **never successfully connecting the YouTube account**.
+
+---
+
+## The Main Problem
+
+The Connect page still does **NOT** connect YouTube.
+
+The OAuth flow is still failing somewhere before:
+
+* obtaining a YouTube refresh token
+* saving the refresh token
+* saving the channelId
+* saving the channelTitle
+
+As a result, auto-detect always falls back to:
+
+```json
+{
+  "error": "youtube_oauth_required",
+  "message": "Connect your YouTube channel to continue."
+}
+```
+
+---
+
+## I Need You To Trace The ENTIRE OAuth Flow
+
+Please do not stop at the auto-detect endpoint.
+
+I need you to trace everything from beginning to end:
+
+1. Does clicking **Connect YouTube** actually call `/api/youtube-oauth/start`?
+2. Does `/api/youtube-oauth/start` execute?
+3. Does Google redirect back to `/api/youtube-oauth/callback`?
+4. Does the callback receive the authorization code?
+5. Does the token exchange succeed?
+6. Is Google returning a refresh token?
+7. Is the refresh token written to the database?
+8. Is the channel fetched from the YouTube API?
+9. Is the channelId stored?
+10. Is the user record updated?
+11. Why is `channelId` still `null`?
+12. Why is `youtubeRefreshToken` still `null`?
+
+I want logs for every one of these steps.
+
+---
+
+## Also Fix Google Login
+
+Google login is still **NOT** automatically connecting the user's YouTube account.
+
+The logs show the Clerk token only contains:
+
+* email
+* userinfo.email
+* userinfo.profile
+* openid
+* profile
+
+There are **no YouTube scopes**.
+
+Please determine whether automatic YouTube connection through Google Sign-In is actually possible with the current Clerk configuration.
+
+If it is possible, implement it.
+
+If it is not possible, explain exactly why and implement the correct industry-standard flow.
+
+---
+
+## Please Investigate the Actual Root Cause
+
+Do not assume the issue is with Google Cloud configuration unless you can prove it.
+
+Inspect the project and identify the exact line of code or configuration that prevents the YouTube OAuth flow from completing.
+
+---
+
+## If You Need Anything From Me
+
+If you need any additional information, ask me specifically.
+
+For example:
+
+* Google Cloud Console screenshots
+* OAuth Client settings
+* Redirect URI configuration
+* Clerk Dashboard settings
+* Environment variables
+* Database records
+* Browser Network tab
+* Backend logs
+* Frontend code
+* OAuth callback response
+
+I will provide whatever you need.
+
+Please don't guess—find the exact root cause and fix it completely.
