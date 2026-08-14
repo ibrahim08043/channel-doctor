@@ -12,6 +12,8 @@ tags:
   - name: channels
   - name: ai
   - name: connected
+  - name: settings
+  - name: notifications
 paths:
   /healthz:
     get:
@@ -423,6 +425,150 @@ paths:
       operationId: deleteSavedAnalysis
       tags: [connected]
       summary: Delete a saved analysis by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "204":
+          description: Deleted
+
+  /settings:
+    get:
+      operationId: getSettings
+      tags: [settings]
+      summary: Get the signed-in user's full settings (AI, alerts, notifications, profile)
+      responses:
+        "200":
+          description: Settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SettingsBundle"
+    put:
+      operationId: updateSettings
+      tags: [settings]
+      summary: Partially update the signed-in user's settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SettingsPatch"
+      responses:
+        "200":
+          description: Updated settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SettingsBundle"
+
+  /notifications:
+    get:
+      operationId: listNotifications
+      tags: [notifications]
+      summary: List the signed-in user's notifications
+      parameters:
+        - in: query
+          name: limit
+          schema: { type: integer, default: 50 }
+      responses:
+        "200":
+          description: Notifications
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationsResult"
+
+  /unread-count:
+    get:
+      operationId: getUnreadCount
+      tags: [notifications]
+      summary: Unread notification count for the signed-in user (top-level alias)
+      responses:
+        "200":
+          description: Count
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnreadCount"
+
+  /notifications/unread-count:
+    get:
+      operationId: getNotificationUnreadCount
+      tags: [notifications]
+      summary: Unread notification count for the signed-in user
+      responses:
+        "200":
+          description: Count
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnreadCount"
+
+  /notifications/read-all:
+    post:
+      operationId: markAllNotificationsRead
+      tags: [notifications]
+      summary: Mark all of the signed-in user's notifications as read
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MarkAllReadResult"
+
+  /notifications/send-test:
+    post:
+      operationId: sendTestNotification
+      tags: [notifications]
+      summary: Fire a test real-time notification to verify WebSocket wiring
+      responses:
+        "200":
+          description: Sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OkResult"
+
+  /notifications/scan:
+    post:
+      operationId: scanForAlerts
+      tags: [notifications]
+      summary: Re-check the connected channel and create alerts respecting alert preferences
+      responses:
+        "200":
+          description: Scanned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationsResult"
+
+  /notifications/{id}/read:
+    post:
+      operationId: markNotificationRead
+      tags: [notifications]
+      summary: Mark a single notification as read
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Updated notification
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+
+  /notifications/{id}:
+    delete:
+      operationId: deleteNotification
+      tags: [notifications]
+      summary: Delete a single notification
       parameters:
         - in: path
           name: id
@@ -1106,3 +1252,158 @@ components:
           type: array
           items: { $ref: "#/components/schemas/Achievement" }
       required: [analysesRun, savedReports, channelConnected, joinedAt, achievements]
+
+    # ── Settings ──────────────────────────────────────────────────────────────
+
+    AiPreferences:
+      type: object
+      properties:
+        aiPersonality: { type: string, enum: [consultant, growthhacker, branding, coach, analyst] }
+        aiStyle: { type: string, enum: [direct, detailed, executive, beginner, advanced] }
+        aiDepth: { type: string, enum: [quick, standard, deep, enterprise] }
+        aiCreativity: { type: integer }
+        aiFocusAreas:
+          type: array
+          items: { type: string }
+        responseLength: { type: string, enum: [concise, balanced, detailed] }
+        tone: { type: string, enum: [professional, casual, encouraging, direct] }
+        autoRecommendations: { type: boolean }
+        autoOptimization: { type: boolean }
+        autoAnalysis: { type: boolean }
+        weeklyReports: { type: boolean }
+        monthlyReports: { type: boolean }
+        learningMode: { type: boolean }
+        contentSuggestions: { type: boolean }
+        thumbnailSuggestions: { type: boolean }
+        seoSuggestions: { type: boolean }
+        trendDetection: { type: boolean }
+        growthPrediction: { type: boolean }
+
+    YoutubeAlerts:
+      type: object
+      properties:
+        subscriberMilestones: { type: boolean }
+        subscriberDrop: { type: boolean }
+        videoPerformanceDrop: { type: boolean }
+        viralVideo: { type: boolean }
+        ctrDrop: { type: boolean }
+        retentionDrop: { type: boolean }
+        lowImpressions: { type: boolean }
+        monetization: { type: boolean }
+        copyright: { type: boolean }
+        consistency: { type: boolean }
+        growthSpike: { type: boolean }
+
+    InstagramAlerts:
+      type: object
+      properties:
+        followerSpike: { type: boolean }
+        followerDrop: { type: boolean }
+        viralReel: { type: boolean }
+        engagementDrop: { type: boolean }
+
+    FacebookAlerts:
+      type: object
+      properties:
+        postPerformance: { type: boolean }
+        pageGrowth: { type: boolean }
+        engagement: { type: boolean }
+
+    SystemAlerts:
+      type: object
+      properties:
+        billing: { type: boolean }
+        aiQuota: { type: boolean }
+        storage: { type: boolean }
+        security: { type: boolean }
+
+    AlertPreferences:
+      type: object
+      properties:
+        youtube: { $ref: "#/components/schemas/YoutubeAlerts" }
+        instagram: { $ref: "#/components/schemas/InstagramAlerts" }
+        facebook: { $ref: "#/components/schemas/FacebookAlerts" }
+        system: { $ref: "#/components/schemas/SystemAlerts" }
+
+    NotificationChannels:
+      type: object
+      properties:
+        inApp: { type: boolean }
+        email: { type: boolean }
+        browser: { type: boolean }
+        realtime: { type: boolean }
+
+    NotificationPreferences:
+      type: object
+      properties:
+        channels: { $ref: "#/components/schemas/NotificationChannels" }
+
+    ProfileSettings:
+      type: object
+      properties:
+        displayName: { type: string, nullable: true }
+        language: { type: string }
+        theme: { type: string, enum: [dark, light] }
+        animations: { type: boolean }
+        timezone: { type: string, nullable: true }
+
+    SettingsBundle:
+      type: object
+      properties:
+        ai: { $ref: "#/components/schemas/AiPreferences" }
+        alerts: { $ref: "#/components/schemas/AlertPreferences" }
+        notifications: { $ref: "#/components/schemas/NotificationPreferences" }
+        profile: { $ref: "#/components/schemas/ProfileSettings" }
+      required: [ai, alerts, notifications, profile]
+
+    SettingsPatch:
+      type: object
+      properties:
+        ai: { $ref: "#/components/schemas/AiPreferences" }
+        alerts: { $ref: "#/components/schemas/AlertPreferences" }
+        notifications: { $ref: "#/components/schemas/NotificationPreferences" }
+        profile: { $ref: "#/components/schemas/ProfileSettings" }
+
+    # ── Notifications ─────────────────────────────────────────────────────────
+
+    Notification:
+      type: object
+      properties:
+        id: { type: string }
+        type: { type: string }
+        title: { type: string }
+        body: { type: string }
+        message: { type: string }
+        severity: { type: string, enum: [info, warning, critical] }
+        read: { type: boolean }
+        createdAt: { type: string }
+        data: { type: object, nullable: true }
+      required: [id, type, title, body, severity, read, createdAt]
+
+    NotificationsResult:
+      type: object
+      properties:
+        items:
+          type: array
+          items: { $ref: "#/components/schemas/Notification" }
+        unread: { type: integer }
+      required: [items, unread]
+
+    UnreadCount:
+      type: object
+      properties:
+        count: { type: integer }
+      required: [count]
+
+    MarkAllReadResult:
+      type: object
+      properties:
+        ok: { type: boolean }
+        updated: { type: integer }
+      required: [ok, updated]
+
+    OkResult:
+      type: object
+      properties:
+        ok: { type: boolean }
+      required: [ok]

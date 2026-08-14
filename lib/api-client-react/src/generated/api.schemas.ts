@@ -568,9 +568,208 @@ export interface UserStatsResult {
   achievements: Achievement[];
 }
 
+export type AiPreferencesAiPersonality =
+  (typeof AiPreferencesAiPersonality)[keyof typeof AiPreferencesAiPersonality];
+
+export const AiPreferencesAiPersonality = {
+  consultant: "consultant",
+  growthhacker: "growthhacker",
+  branding: "branding",
+  coach: "coach",
+  analyst: "analyst",
+} as const;
+
+export type AiPreferencesAiStyle =
+  (typeof AiPreferencesAiStyle)[keyof typeof AiPreferencesAiStyle];
+
+export const AiPreferencesAiStyle = {
+  direct: "direct",
+  detailed: "detailed",
+  executive: "executive",
+  beginner: "beginner",
+  advanced: "advanced",
+} as const;
+
+export type AiPreferencesAiDepth =
+  (typeof AiPreferencesAiDepth)[keyof typeof AiPreferencesAiDepth];
+
+export const AiPreferencesAiDepth = {
+  quick: "quick",
+  standard: "standard",
+  deep: "deep",
+  enterprise: "enterprise",
+} as const;
+
+export type AiPreferencesResponseLength =
+  (typeof AiPreferencesResponseLength)[keyof typeof AiPreferencesResponseLength];
+
+export const AiPreferencesResponseLength = {
+  concise: "concise",
+  balanced: "balanced",
+  detailed: "detailed",
+} as const;
+
+export type AiPreferencesTone =
+  (typeof AiPreferencesTone)[keyof typeof AiPreferencesTone];
+
+export const AiPreferencesTone = {
+  professional: "professional",
+  casual: "casual",
+  encouraging: "encouraging",
+  direct: "direct",
+} as const;
+
+export interface AiPreferences {
+  aiPersonality?: AiPreferencesAiPersonality;
+  aiStyle?: AiPreferencesAiStyle;
+  aiDepth?: AiPreferencesAiDepth;
+  aiCreativity?: number;
+  aiFocusAreas?: string[];
+  responseLength?: AiPreferencesResponseLength;
+  tone?: AiPreferencesTone;
+  autoRecommendations?: boolean;
+  autoOptimization?: boolean;
+  autoAnalysis?: boolean;
+  weeklyReports?: boolean;
+  monthlyReports?: boolean;
+  learningMode?: boolean;
+  contentSuggestions?: boolean;
+  thumbnailSuggestions?: boolean;
+  seoSuggestions?: boolean;
+  trendDetection?: boolean;
+  growthPrediction?: boolean;
+}
+
+export interface YoutubeAlerts {
+  subscriberMilestones?: boolean;
+  subscriberDrop?: boolean;
+  videoPerformanceDrop?: boolean;
+  viralVideo?: boolean;
+  ctrDrop?: boolean;
+  retentionDrop?: boolean;
+  lowImpressions?: boolean;
+  monetization?: boolean;
+  copyright?: boolean;
+  consistency?: boolean;
+  growthSpike?: boolean;
+}
+
+export interface InstagramAlerts {
+  followerSpike?: boolean;
+  followerDrop?: boolean;
+  viralReel?: boolean;
+  engagementDrop?: boolean;
+}
+
+export interface FacebookAlerts {
+  postPerformance?: boolean;
+  pageGrowth?: boolean;
+  engagement?: boolean;
+}
+
+export interface SystemAlerts {
+  billing?: boolean;
+  aiQuota?: boolean;
+  storage?: boolean;
+  security?: boolean;
+}
+
+export interface AlertPreferences {
+  youtube?: YoutubeAlerts;
+  instagram?: InstagramAlerts;
+  facebook?: FacebookAlerts;
+  system?: SystemAlerts;
+}
+
+export interface NotificationChannels {
+  inApp?: boolean;
+  email?: boolean;
+  browser?: boolean;
+  realtime?: boolean;
+}
+
+export interface NotificationPreferences {
+  channels?: NotificationChannels;
+}
+
+export type ProfileSettingsTheme =
+  (typeof ProfileSettingsTheme)[keyof typeof ProfileSettingsTheme];
+
+export const ProfileSettingsTheme = {
+  dark: "dark",
+  light: "light",
+} as const;
+
+export interface ProfileSettings {
+  displayName?: string | null;
+  language?: string;
+  theme?: ProfileSettingsTheme;
+  animations?: boolean;
+  timezone?: string | null;
+}
+
+export interface SettingsBundle {
+  ai: AiPreferences;
+  alerts: AlertPreferences;
+  notifications: NotificationPreferences;
+  profile: ProfileSettings;
+}
+
+export interface SettingsPatch {
+  ai?: AiPreferences;
+  alerts?: AlertPreferences;
+  notifications?: NotificationPreferences;
+  profile?: ProfileSettings;
+}
+
+export type NotificationSeverity =
+  (typeof NotificationSeverity)[keyof typeof NotificationSeverity];
+
+export const NotificationSeverity = {
+  info: "info",
+  warning: "warning",
+  critical: "critical",
+} as const;
+
+export type NotificationData = { [key: string]: unknown } | null;
+
+export interface Notification {
+  id: string;
+  type: string;
+  title: string;
+  body: string;
+  message?: string;
+  severity: NotificationSeverity;
+  read: boolean;
+  createdAt: string;
+  data?: NotificationData;
+}
+
+export interface NotificationsResult {
+  items: Notification[];
+  unread: number;
+}
+
+export interface UnreadCount {
+  count: number;
+}
+
+export interface MarkAllReadResult {
+  ok: boolean;
+  updated: number;
+}
+
+export interface OkResult {
+  ok: boolean;
+}
+
 export type SearchChannelsParams = {
   /**
    * @minLength 1
    */
   q: string;
+};
+
+export type ListNotificationsParams = {
+  limit?: number;
 };

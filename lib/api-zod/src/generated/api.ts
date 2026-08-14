@@ -265,14 +265,9 @@ export const GetConnectedProfileResponse = zod.object({
 });
 
 /**
- * @summary Save the signed-in user's primary YouTube channel
+ * @summary Auto-detect and connect the authenticated user's YouTube channel via Google OAuth
  */
-
-export const LinkChannelBody = zod.object({
-  channelId: zod.string().min(1),
-});
-
-export const LinkChannelResponse = zod.object({
+export const AutoDetectYoutubeResponse = zod.object({
   id: zod.string(),
   email: zod.string().nullish(),
   name: zod.string().nullish(),
@@ -713,5 +708,378 @@ export const CreateSavedAnalysisResponse = zod.object({
  * @summary Delete a saved analysis by id
  */
 export const DeleteSavedAnalysisParams = zod.object({
+  id: zod.coerce.string(),
+});
+
+/**
+ * @summary Get the signed-in user's full settings (AI, alerts, notifications, profile)
+ */
+export const GetSettingsResponse = zod.object({
+  ai: zod.object({
+    aiPersonality: zod
+      .enum(["consultant", "growthhacker", "branding", "coach", "analyst"])
+      .optional(),
+    aiStyle: zod
+      .enum(["direct", "detailed", "executive", "beginner", "advanced"])
+      .optional(),
+    aiDepth: zod.enum(["quick", "standard", "deep", "enterprise"]).optional(),
+    aiCreativity: zod.number().optional(),
+    aiFocusAreas: zod.array(zod.string()).optional(),
+    responseLength: zod.enum(["concise", "balanced", "detailed"]).optional(),
+    tone: zod
+      .enum(["professional", "casual", "encouraging", "direct"])
+      .optional(),
+    autoRecommendations: zod.boolean().optional(),
+    autoOptimization: zod.boolean().optional(),
+    autoAnalysis: zod.boolean().optional(),
+    weeklyReports: zod.boolean().optional(),
+    monthlyReports: zod.boolean().optional(),
+    learningMode: zod.boolean().optional(),
+    contentSuggestions: zod.boolean().optional(),
+    thumbnailSuggestions: zod.boolean().optional(),
+    seoSuggestions: zod.boolean().optional(),
+    trendDetection: zod.boolean().optional(),
+    growthPrediction: zod.boolean().optional(),
+  }),
+  alerts: zod.object({
+    youtube: zod
+      .object({
+        subscriberMilestones: zod.boolean().optional(),
+        subscriberDrop: zod.boolean().optional(),
+        videoPerformanceDrop: zod.boolean().optional(),
+        viralVideo: zod.boolean().optional(),
+        ctrDrop: zod.boolean().optional(),
+        retentionDrop: zod.boolean().optional(),
+        lowImpressions: zod.boolean().optional(),
+        monetization: zod.boolean().optional(),
+        copyright: zod.boolean().optional(),
+        consistency: zod.boolean().optional(),
+        growthSpike: zod.boolean().optional(),
+      })
+      .optional(),
+    instagram: zod
+      .object({
+        followerSpike: zod.boolean().optional(),
+        followerDrop: zod.boolean().optional(),
+        viralReel: zod.boolean().optional(),
+        engagementDrop: zod.boolean().optional(),
+      })
+      .optional(),
+    facebook: zod
+      .object({
+        postPerformance: zod.boolean().optional(),
+        pageGrowth: zod.boolean().optional(),
+        engagement: zod.boolean().optional(),
+      })
+      .optional(),
+    system: zod
+      .object({
+        billing: zod.boolean().optional(),
+        aiQuota: zod.boolean().optional(),
+        storage: zod.boolean().optional(),
+        security: zod.boolean().optional(),
+      })
+      .optional(),
+  }),
+  notifications: zod.object({
+    channels: zod
+      .object({
+        inApp: zod.boolean().optional(),
+        email: zod.boolean().optional(),
+        browser: zod.boolean().optional(),
+        realtime: zod.boolean().optional(),
+      })
+      .optional(),
+  }),
+  profile: zod.object({
+    displayName: zod.string().nullish(),
+    language: zod.string().optional(),
+    theme: zod.enum(["dark", "light"]).optional(),
+    animations: zod.boolean().optional(),
+    timezone: zod.string().nullish(),
+  }),
+});
+
+/**
+ * @summary Partially update the signed-in user's settings
+ */
+export const UpdateSettingsBody = zod.object({
+  ai: zod
+    .object({
+      aiPersonality: zod
+        .enum(["consultant", "growthhacker", "branding", "coach", "analyst"])
+        .optional(),
+      aiStyle: zod
+        .enum(["direct", "detailed", "executive", "beginner", "advanced"])
+        .optional(),
+      aiDepth: zod.enum(["quick", "standard", "deep", "enterprise"]).optional(),
+      aiCreativity: zod.number().optional(),
+      aiFocusAreas: zod.array(zod.string()).optional(),
+      responseLength: zod.enum(["concise", "balanced", "detailed"]).optional(),
+      tone: zod
+        .enum(["professional", "casual", "encouraging", "direct"])
+        .optional(),
+      autoRecommendations: zod.boolean().optional(),
+      autoOptimization: zod.boolean().optional(),
+      autoAnalysis: zod.boolean().optional(),
+      weeklyReports: zod.boolean().optional(),
+      monthlyReports: zod.boolean().optional(),
+      learningMode: zod.boolean().optional(),
+      contentSuggestions: zod.boolean().optional(),
+      thumbnailSuggestions: zod.boolean().optional(),
+      seoSuggestions: zod.boolean().optional(),
+      trendDetection: zod.boolean().optional(),
+      growthPrediction: zod.boolean().optional(),
+    })
+    .optional(),
+  alerts: zod
+    .object({
+      youtube: zod
+        .object({
+          subscriberMilestones: zod.boolean().optional(),
+          subscriberDrop: zod.boolean().optional(),
+          videoPerformanceDrop: zod.boolean().optional(),
+          viralVideo: zod.boolean().optional(),
+          ctrDrop: zod.boolean().optional(),
+          retentionDrop: zod.boolean().optional(),
+          lowImpressions: zod.boolean().optional(),
+          monetization: zod.boolean().optional(),
+          copyright: zod.boolean().optional(),
+          consistency: zod.boolean().optional(),
+          growthSpike: zod.boolean().optional(),
+        })
+        .optional(),
+      instagram: zod
+        .object({
+          followerSpike: zod.boolean().optional(),
+          followerDrop: zod.boolean().optional(),
+          viralReel: zod.boolean().optional(),
+          engagementDrop: zod.boolean().optional(),
+        })
+        .optional(),
+      facebook: zod
+        .object({
+          postPerformance: zod.boolean().optional(),
+          pageGrowth: zod.boolean().optional(),
+          engagement: zod.boolean().optional(),
+        })
+        .optional(),
+      system: zod
+        .object({
+          billing: zod.boolean().optional(),
+          aiQuota: zod.boolean().optional(),
+          storage: zod.boolean().optional(),
+          security: zod.boolean().optional(),
+        })
+        .optional(),
+    })
+    .optional(),
+  notifications: zod
+    .object({
+      channels: zod
+        .object({
+          inApp: zod.boolean().optional(),
+          email: zod.boolean().optional(),
+          browser: zod.boolean().optional(),
+          realtime: zod.boolean().optional(),
+        })
+        .optional(),
+    })
+    .optional(),
+  profile: zod
+    .object({
+      displayName: zod.string().nullish(),
+      language: zod.string().optional(),
+      theme: zod.enum(["dark", "light"]).optional(),
+      animations: zod.boolean().optional(),
+      timezone: zod.string().nullish(),
+    })
+    .optional(),
+});
+
+export const UpdateSettingsResponse = zod.object({
+  ai: zod.object({
+    aiPersonality: zod
+      .enum(["consultant", "growthhacker", "branding", "coach", "analyst"])
+      .optional(),
+    aiStyle: zod
+      .enum(["direct", "detailed", "executive", "beginner", "advanced"])
+      .optional(),
+    aiDepth: zod.enum(["quick", "standard", "deep", "enterprise"]).optional(),
+    aiCreativity: zod.number().optional(),
+    aiFocusAreas: zod.array(zod.string()).optional(),
+    responseLength: zod.enum(["concise", "balanced", "detailed"]).optional(),
+    tone: zod
+      .enum(["professional", "casual", "encouraging", "direct"])
+      .optional(),
+    autoRecommendations: zod.boolean().optional(),
+    autoOptimization: zod.boolean().optional(),
+    autoAnalysis: zod.boolean().optional(),
+    weeklyReports: zod.boolean().optional(),
+    monthlyReports: zod.boolean().optional(),
+    learningMode: zod.boolean().optional(),
+    contentSuggestions: zod.boolean().optional(),
+    thumbnailSuggestions: zod.boolean().optional(),
+    seoSuggestions: zod.boolean().optional(),
+    trendDetection: zod.boolean().optional(),
+    growthPrediction: zod.boolean().optional(),
+  }),
+  alerts: zod.object({
+    youtube: zod
+      .object({
+        subscriberMilestones: zod.boolean().optional(),
+        subscriberDrop: zod.boolean().optional(),
+        videoPerformanceDrop: zod.boolean().optional(),
+        viralVideo: zod.boolean().optional(),
+        ctrDrop: zod.boolean().optional(),
+        retentionDrop: zod.boolean().optional(),
+        lowImpressions: zod.boolean().optional(),
+        monetization: zod.boolean().optional(),
+        copyright: zod.boolean().optional(),
+        consistency: zod.boolean().optional(),
+        growthSpike: zod.boolean().optional(),
+      })
+      .optional(),
+    instagram: zod
+      .object({
+        followerSpike: zod.boolean().optional(),
+        followerDrop: zod.boolean().optional(),
+        viralReel: zod.boolean().optional(),
+        engagementDrop: zod.boolean().optional(),
+      })
+      .optional(),
+    facebook: zod
+      .object({
+        postPerformance: zod.boolean().optional(),
+        pageGrowth: zod.boolean().optional(),
+        engagement: zod.boolean().optional(),
+      })
+      .optional(),
+    system: zod
+      .object({
+        billing: zod.boolean().optional(),
+        aiQuota: zod.boolean().optional(),
+        storage: zod.boolean().optional(),
+        security: zod.boolean().optional(),
+      })
+      .optional(),
+  }),
+  notifications: zod.object({
+    channels: zod
+      .object({
+        inApp: zod.boolean().optional(),
+        email: zod.boolean().optional(),
+        browser: zod.boolean().optional(),
+        realtime: zod.boolean().optional(),
+      })
+      .optional(),
+  }),
+  profile: zod.object({
+    displayName: zod.string().nullish(),
+    language: zod.string().optional(),
+    theme: zod.enum(["dark", "light"]).optional(),
+    animations: zod.boolean().optional(),
+    timezone: zod.string().nullish(),
+  }),
+});
+
+/**
+ * @summary List the signed-in user's notifications
+ */
+export const listNotificationsQueryLimitDefault = 50;
+
+export const ListNotificationsQueryParams = zod.object({
+  limit: zod.coerce.number().default(listNotificationsQueryLimitDefault),
+});
+
+export const ListNotificationsResponse = zod.object({
+  items: zod.array(
+    zod.object({
+      id: zod.string(),
+      type: zod.string(),
+      title: zod.string(),
+      body: zod.string(),
+      message: zod.string().optional(),
+      severity: zod.enum(["info", "warning", "critical"]),
+      read: zod.boolean(),
+      createdAt: zod.string(),
+      data: zod.object({}).passthrough().nullish(),
+    }),
+  ),
+  unread: zod.number(),
+});
+
+/**
+ * @summary Unread notification count for the signed-in user (top-level alias)
+ */
+export const GetUnreadCountResponse = zod.object({
+  count: zod.number(),
+});
+
+/**
+ * @summary Unread notification count for the signed-in user
+ */
+export const GetNotificationUnreadCountResponse = zod.object({
+  count: zod.number(),
+});
+
+/**
+ * @summary Mark all of the signed-in user's notifications as read
+ */
+export const MarkAllNotificationsReadResponse = zod.object({
+  ok: zod.boolean(),
+  updated: zod.number(),
+});
+
+/**
+ * @summary Fire a test real-time notification to verify WebSocket wiring
+ */
+export const SendTestNotificationResponse = zod.object({
+  ok: zod.boolean(),
+});
+
+/**
+ * @summary Re-check the connected channel and create alerts respecting alert preferences
+ */
+export const ScanForAlertsResponse = zod.object({
+  items: zod.array(
+    zod.object({
+      id: zod.string(),
+      type: zod.string(),
+      title: zod.string(),
+      body: zod.string(),
+      message: zod.string().optional(),
+      severity: zod.enum(["info", "warning", "critical"]),
+      read: zod.boolean(),
+      createdAt: zod.string(),
+      data: zod.object({}).passthrough().nullish(),
+    }),
+  ),
+  unread: zod.number(),
+});
+
+/**
+ * @summary Mark a single notification as read
+ */
+export const MarkNotificationReadParams = zod.object({
+  id: zod.coerce.string(),
+});
+
+export const MarkNotificationReadResponse = zod.object({
+  id: zod.string(),
+  type: zod.string(),
+  title: zod.string(),
+  body: zod.string(),
+  message: zod.string().optional(),
+  severity: zod.enum(["info", "warning", "critical"]),
+  read: zod.boolean(),
+  createdAt: zod.string(),
+  data: zod.object({}).passthrough().nullish(),
+});
+
+/**
+ * @summary Delete a single notification
+ */
+export const DeleteNotificationParams = zod.object({
   id: zod.coerce.string(),
 });

@@ -1,0 +1,9 @@
+{
+  "onlyBuiltDependencies": [
+    "@swc/core",
+    "esbuild",
+    "msw",
+    "unrs-resolver",
+    "@clerk/shared"
+  ]
+}
