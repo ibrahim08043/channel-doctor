@@ -2,7 +2,7 @@ import { io, type Socket } from "socket.io-client";
 import { apiOrigin } from "@/lib/api";
 
 /**
- * Socket.IO client singleton for the Channel Doctor real-time layer.
+ * Socket.IO client singleton for the Social Pulse real-time layer.
  *
  * The server is served from the same origin as the API (the backend), so we
  * reuse the same origin resolution as the REST calls. In production this is

@@ -66,7 +66,7 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* THEME — SocialPulse AI premium dark */
+/* THEME — Social Pulse AI premium dark */
 :root {
   --button-outline: rgba(0,0,0, .10);
   --badge-outline: rgba(0,0,0, .05);
@@ -198,7 +198,16 @@
 
 @layer base {
   * { @apply border-border; }
-  body { @apply font-sans antialiased bg-background text-foreground; }
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    /* Never allow horizontal page scroll caused by an overflowing component. */
+    overflow-x: hidden;
+  }
+  /* Responsive media & images never stretch past their container. */
+  img, video, canvas, svg { max-width: 100%; height: auto; }
+  /* Long unbroken tokens (URLs, handles, channel titles) wrap instead of
+     forcing a container wider than the viewport. */
+  .break-anywhere { overflow-wrap: anywhere; word-break: break-word; }
 }
 
 @layer utilities {

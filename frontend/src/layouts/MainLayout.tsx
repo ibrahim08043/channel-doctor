@@ -62,11 +62,11 @@ export default function Layout({ children }: { children: ReactNode }) {
           <Link href="/" className="flex min-w-0 items-center gap-2.5 font-bold tracking-tight">
             <img
               src="/Logo.png"
-              alt="Channel Doctor"
+              alt="Social Pulse"
               draggable={false}
               className="h-7 w-auto shrink-0 select-none object-contain transition-transform duration-200 hover:scale-[1.04] sm:h-8"
             />
-            <span className="truncate text-gradient">SocialPulse</span>
+            <span className="truncate text-gradient">Social Pulse</span>
             <span className="hidden rounded bg-primary/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-primary min-[380px]:inline">
               AI
             </span>
@@ -81,10 +81,10 @@ export default function Layout({ children }: { children: ReactNode }) {
           <div className="flex items-center gap-2">
             <SignedOut>
               <Link href="/sign-in">
-                <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-foreground">Sign in</Button>
+                <Button size="sm" variant="ghost" className="px-2.5 text-muted-foreground hover:text-foreground sm:px-3">Sign in</Button>
               </Link>
               <Link href="/sign-up">
-                <Button size="sm" className="glow-primary">Get started</Button>
+                <Button size="sm" className="glow-primary px-3 sm:px-4">Get started</Button>
               </Link>
             </SignedOut>
             <SignedIn>
@@ -142,11 +142,11 @@ export default function Layout({ children }: { children: ReactNode }) {
             <div className="flex items-center gap-2 font-semibold">
               <img
                 src="/Logo.png"
-                alt="Channel Doctor"
+                alt="Social Pulse"
                 draggable={false}
                 className="h-6 w-auto shrink-0 select-none object-contain"
               />
-              <span className="text-gradient">SocialPulse AI</span>
+              <span className="text-gradient">Social Pulse AI</span>
             </div>
             <p className="text-xs text-muted-foreground">
               The AI growth OS for creators, brands, and agencies.

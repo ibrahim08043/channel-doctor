@@ -85,13 +85,13 @@ export default function HomePage() {
             </motion.p>
 
             {/* Platform tabs */}
-            <motion.div variants={fadeUp} className="flex gap-1 rounded-xl border border-white/8 bg-white/3 p-1 w-fit">
+            <motion.div variants={fadeUp} className="flex w-full gap-1 overflow-x-auto rounded-xl border border-white/8 bg-white/3 p-1 sm:w-fit sm:overflow-visible">
               {HOME_PLATFORMS.map((p) => (
                 <button
                   key={p.id}
                   type="button"
                   onClick={() => { setPlatform(p.id); setQuery(""); setSubmitted(""); }}
-                  className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
+                  className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
                     platform === p.id
                       ? "bg-primary/15 text-primary shadow-sm"
                       : "text-muted-foreground hover:text-foreground"
@@ -318,7 +318,7 @@ export default function HomePage() {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        className="relative overflow-hidden rounded-3xl p-12 text-center border-gradient"
+        className="relative overflow-hidden rounded-3xl p-8 text-center border-gradient sm:p-12"
       >
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute left-1/2 top-0 h-[300px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/20 blur-3xl" />

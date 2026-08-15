@@ -930,21 +930,21 @@ export default function SocialAnalyzerPage() {
         </motion.div>
 
         {/* Search */}
-        <motion.div variants={fadeUp} className="flex gap-2">
-          <div className="relative flex-1">
+        <motion.div variants={fadeUp} className="flex flex-col gap-2 sm:flex-row">
+          <div className="relative min-w-0 flex-1">
             <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               value={handle}
               onChange={(e) => setHandle(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && run()}
               placeholder={plat.placeholder}
-              className="h-12 pl-11 bg-white/4 border-white/10 focus:border-primary/40 text-base"
+              className="h-12 w-full pl-11 bg-white/4 border-white/10 focus:border-primary/40 text-base"
             />
           </div>
           <Button
             onClick={run}
             disabled={analyze.isPending || !handle.trim()}
-            className="h-12 px-6 glow-primary font-semibold"
+            className="h-12 w-full shrink-0 px-6 glow-primary font-semibold sm:w-auto"
           >
             {analyze.isPending ? (
               <Loader2 className="h-4 w-4 animate-spin" />

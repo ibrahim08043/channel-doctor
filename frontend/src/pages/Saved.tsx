@@ -61,9 +61,9 @@ function SavedInner() {
         {data?.items.map((it) => (
           <Card key={it.id} className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center">
             <ChannelAvatar src={it.channelThumbnail} alt={it.channelTitle} className="h-14 w-14 rounded-full border border-border/60" />
-            <div className="flex-1 space-y-1">
+            <div className="min-w-0 flex-1 space-y-1">
               <div className="flex flex-wrap items-center gap-2">
-                <div className="font-semibold">{it.channelTitle}</div>
+                <div className="truncate font-semibold">{it.channelTitle}</div>
                 <div className={`rounded-full border border-current/30 bg-current/10 px-2 py-0.5 text-[10px] font-semibold ${healthColor(it.healthScore)}`}>
                   {Math.round(it.healthScore)} · {healthBadge(it.healthScore)}
                 </div>

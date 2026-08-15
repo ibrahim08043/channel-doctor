@@ -23,16 +23,20 @@ export default function VideoBreakdownPanel({ channelId }: { channelId: string }
 
   return (
     <Card className="space-y-4 p-6">
-      <div className="flex items-center justify-between gap-3">
-        <div>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
           <h2 className="flex items-center gap-2 text-lg font-semibold">
-            <Sparkles className="h-4 w-4 text-primary" /> Per-video AI breakdown
+            <Sparkles className="h-4 w-4 shrink-0 text-primary" /> Per-video AI breakdown
           </h2>
           <p className="text-xs text-muted-foreground">
             Title score, hook strength, and estimated CTR for your recent uploads.
           </p>
         </div>
-        <Button onClick={() => setRun(true)} disabled={isFetching || run}>
+        <Button
+          onClick={() => setRun(true)}
+          disabled={isFetching || run}
+          className="w-full shrink-0 sm:w-auto"
+        >
           {isFetching ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Play className="mr-2 h-4 w-4" />}
           {run ? (isFetching ? "Analyzing…" : "Refresh") : "Run breakdown"}
         </Button>

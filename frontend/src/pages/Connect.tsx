@@ -400,7 +400,7 @@ function ConnectInner() {
           </div>
           <h1 className="text-3xl font-black">Connect your YouTube channel</h1>
           <p className="text-muted-foreground">
-            Grant read-only access so Channel Doctor can analyze your growth.
+            Grant read-only access so Social Pulse can analyze your growth.
           </p>
         </div>
 
@@ -432,7 +432,7 @@ function ConnectInner() {
               <p className="text-amber-300/70">
                 {!check!.clientIdConfigured && "GOOGLE_CLIENT_ID is missing. "}
                 {!check!.clientSecretConfigured && "GOOGLE_CLIENT_SECRET is missing. "}
-                Add them to your Replit secrets and restart the API server.
+                Add them to your environment configuration and restart the API server.
               </p>
             </div>
           </div>
@@ -594,7 +594,7 @@ function decodeErrorParam(raw: string): string {
     missing_state: "OAuth state parameter was missing. Please try again.",
     invalid_state: "OAuth state was invalid or expired. Please try again.",
     missing_code: "No authorization code was returned by Google. Please try again.",
-    server_misconfigured: "The server is missing GOOGLE_CLIENT_ID or GOOGLE_CLIENT_SECRET. Check your Replit secrets.",
+    server_misconfigured: "The server is missing GOOGLE_CLIENT_ID or GOOGLE_CLIENT_SECRET. Check your environment configuration.",
     no_channel: "No YouTube channel was found on that Google account. Create a channel at youtube.com first.",
     server_error: "An unexpected server error occurred. Check the API server logs.",
   };

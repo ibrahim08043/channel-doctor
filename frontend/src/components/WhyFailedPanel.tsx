@@ -31,9 +31,9 @@ export default function WhyFailedPanel({ channelId, videos }: { channelId: strin
           Forensic AI diagnosis on an underperforming video.
         </p>
       </div>
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
         <select
-          className="flex-1 min-w-[200px] rounded-md border border-border bg-background px-3 py-2 text-sm"
+          className="w-full min-w-0 flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm sm:min-w-[200px]"
           value={picked?.id || ""}
           onChange={(e) => setPicked(videos.find((v) => v.id === e.target.value) ?? null)}
         >
@@ -41,7 +41,7 @@ export default function WhyFailedPanel({ channelId, videos }: { channelId: strin
             <option key={v.id} value={v.id}>{v.title.slice(0, 80)} · {v.views.toLocaleString()} views</option>
           ))}
         </select>
-        <Button onClick={run} disabled={!picked || m.isPending}>
+        <Button onClick={run} disabled={!picked || m.isPending} className="w-full shrink-0 sm:w-auto">
           {m.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Diagnose"}
         </Button>
       </div>

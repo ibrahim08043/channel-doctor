@@ -73,7 +73,7 @@ export default function MetricGrid({ data }: { data: ChannelDetails }) {
               }`}
             />
           </div>
-          <div className={`text-2xl font-bold ${(m as any).colorClass || ""}`}>
+          <div className={`text-2xl font-bold leading-tight break-anywhere ${(m as any).colorClass || ""}`}>
             {m.value}
           </div>
           <div className="text-xs text-muted-foreground">{m.sub}</div>

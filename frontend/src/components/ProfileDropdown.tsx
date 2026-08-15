@@ -153,7 +153,7 @@ export default function ProfileDropdown() {
                   />
                   {connection === "connected" ? "Live" : connection === "connecting" ? "Connecting" : "Offline"}
                 </span>
-                <span className="text-[11px] text-muted-foreground/70">SocialPulse AI</span>
+                <span className="text-[11px] text-muted-foreground/70">Social Pulse AI</span>
               </div>
               <button
                 onClick={doSignOut}

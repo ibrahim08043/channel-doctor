@@ -33,7 +33,7 @@ export default function ProfilePage() {
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
-      <Card className="relative overflow-hidden p-8">
+      <Card className="relative overflow-hidden p-6 sm:p-8">
         <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-primary/20 blur-3xl" />
         <div className="absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-accent/20 blur-3xl" />
         <div className="relative flex flex-col items-start gap-5 sm:flex-row sm:items-center">

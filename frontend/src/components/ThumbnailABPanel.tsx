@@ -253,8 +253,8 @@ export default function ThumbnailABPanel() {
           <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="The title for context" />
         </div>
 
-        <div className="flex items-center gap-3">
-          <Button type="submit" disabled={!canCompare}>
+        <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+          <Button type="submit" disabled={!canCompare} className="w-full shrink-0 sm:w-auto">
             {m.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
             {m.isPending ? "Comparing…" : "Compare thumbnails"}
           </Button>

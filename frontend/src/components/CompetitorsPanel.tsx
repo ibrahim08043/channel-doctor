@@ -12,16 +12,20 @@ export default function CompetitorsPanel({ channelId }: { channelId: string }) {
 
   return (
     <Card className="space-y-4 p-6">
-      <div className="flex items-center justify-between gap-3">
-        <div>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
           <h2 className="flex items-center gap-2 text-lg font-semibold">
-            <Users className="h-4 w-4 text-accent" /> Competitor comparison
+            <Users className="h-4 w-4 shrink-0 text-accent" /> Competitor comparison
           </h2>
           <p className="text-xs text-muted-foreground">
             Find similar channels in your niche and see exactly why they're outperforming.
           </p>
         </div>
-        <Button onClick={() => setRun(true)} disabled={isFetching || run}>
+        <Button
+          onClick={() => setRun(true)}
+          disabled={isFetching || run}
+          className="w-full shrink-0 sm:w-auto"
+        >
           {isFetching ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <TrendingUp className="mr-2 h-4 w-4" />}
           {run ? (isFetching ? "Comparing…" : "Refresh") : "Find competitors"}
         </Button>

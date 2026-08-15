@@ -213,7 +213,7 @@ function ConnectedDashboard({
           size="sm"
           onClick={handleDisconnect}
           disabled={unlink.isPending}
-          className="ml-auto"
+          className="sm:ml-auto"
         >
           {unlink.isPending ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -233,9 +233,9 @@ function ConnectedDashboard({
 
       <div className="grid gap-6 lg:grid-cols-3">
         <Card className="space-y-4 p-6 lg:col-span-2">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-2">
             <h2 className="flex items-center gap-2 text-lg font-semibold">
-              <BarChart3 className="h-4 w-4" /> View trend (last 25 videos)
+              <BarChart3 className="h-4 w-4 shrink-0" /> View trend (last 25 videos)
             </h2>
             <span className="text-xs text-muted-foreground">
               Avg {compactNumber(data.avgViews)} · Median {compactNumber(data.medianViews)}

@@ -854,20 +854,22 @@ function AccountTab({ user, me, unlink }: { user: ReturnType<typeof useUser>["us
       <Card className="space-y-4 p-6 glass">
         <SectionHeader icon={Youtube} title="Connected Channel" accent="border-rose-500/30 bg-rose-500/10 text-rose-300" />
         {me.data?.channelId ? (
-          <div className="flex items-center gap-3">
-            {me.data.channelThumbnail && (
-              <ChannelAvatar src={me.data.channelThumbnail} alt={me.data.channelTitle} className="h-12 w-12 rounded-full ring-2 ring-primary/20" />
-            )}
-            <div className="min-w-0 flex-1">
-              <div className="font-medium">{me.data.channelTitle}</div>
-              <div className="text-xs text-muted-foreground">Connected YouTube channel</div>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-3">
+            <div className="flex min-w-0 items-center gap-3">
+              {me.data.channelThumbnail && (
+                <ChannelAvatar src={me.data.channelThumbnail} alt={me.data.channelTitle} className="h-12 w-12 shrink-0 rounded-full ring-2 ring-primary/20" />
+              )}
+              <div className="min-w-0 flex-1">
+                <div className="truncate font-medium">{me.data.channelTitle}</div>
+                <div className="text-xs text-muted-foreground">Connected YouTube channel</div>
+              </div>
             </div>
             <Button
               variant="outline"
               size="sm"
               disabled={unlink.isPending}
               onClick={() => unlink.mutate(undefined, { onSuccess: () => me.refetch() })}
-              className="border-white/10"
+              className="border-white/10 sm:shrink-0"
             >
               Disconnect
             </Button>
@@ -931,10 +933,10 @@ function ActionRow({
   onClick: () => void;
 }) {
   return (
-    <div className="flex items-start justify-between gap-4 rounded-lg border border-white/8 bg-white/3 px-4 py-3">
+    <div className="flex flex-col gap-3 rounded-lg border border-white/8 bg-white/3 px-4 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
       <div className="flex items-start gap-3">
         <Icon className={cn("mt-0.5 h-4 w-4 shrink-0", danger ? "text-destructive" : "text-muted-foreground")} />
-        <div>
+        <div className="min-w-0">
           <div className="text-sm font-medium">{label}</div>
           <p className="text-xs text-muted-foreground">{desc}</p>
         </div>
@@ -943,7 +945,7 @@ function ActionRow({
         variant="outline"
         size="sm"
         onClick={onClick}
-        className={cn("shrink-0 text-xs", danger ? "border-destructive/30 text-destructive hover:bg-destructive/10" : "border-white/10")}
+        className={cn("shrink-0 text-xs sm:ml-auto", danger ? "border-destructive/30 text-destructive hover:bg-destructive/10" : "border-white/10")}
       >
         {action}
       </Button>
