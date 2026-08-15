@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import { Link, useLocation } from "wouter";
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import {
-  Zap,
   LayoutDashboard,
   BookmarkCheck,
   Sparkles,
@@ -60,16 +59,15 @@ export default function Layout({ children }: { children: ReactNode }) {
 
       <header className="sticky top-0 z-40 border-b border-white/[0.06] bg-background/80 backdrop-blur-xl">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
-          <Link href="/" className="flex items-center gap-2.5 font-bold tracking-tight">
-            <motion.span
-              className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-primary to-accent shadow-lg shadow-primary/40"
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              transition={{ type: "spring" as const, stiffness: 300 }}
-            >
-              <Zap className="h-4 w-4 text-white" />
-            </motion.span>
-            <span className="text-gradient">SocialPulse</span>
-            <span className="rounded bg-primary/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-primary">
+          <Link href="/" className="flex min-w-0 items-center gap-2.5 font-bold tracking-tight">
+            <img
+              src="/Logo.png"
+              alt="Channel Doctor"
+              draggable={false}
+              className="h-7 w-auto shrink-0 select-none object-contain transition-transform duration-200 hover:scale-[1.04] sm:h-8"
+            />
+            <span className="truncate text-gradient">SocialPulse</span>
+            <span className="hidden rounded bg-primary/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-primary min-[380px]:inline">
               AI
             </span>
           </Link>
@@ -142,9 +140,12 @@ export default function Layout({ children }: { children: ReactNode }) {
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <div className="flex items-center gap-2 font-semibold">
-              <span className="grid h-6 w-6 place-items-center rounded bg-gradient-to-br from-primary to-accent">
-                <Zap className="h-3.5 w-3.5 text-white" />
-              </span>
+              <img
+                src="/Logo.png"
+                alt="Channel Doctor"
+                draggable={false}
+                className="h-6 w-auto shrink-0 select-none object-contain"
+              />
               <span className="text-gradient">SocialPulse AI</span>
             </div>
             <p className="text-xs text-muted-foreground">
