@@ -1,10 +1,13 @@
 import { io, type Socket } from "socket.io-client";
+import { apiOrigin } from "@/lib/api";
 
 /**
  * Socket.IO client singleton for the Channel Doctor real-time layer.
  *
- * The server is served from the same origin as the API (backend port 8080 in
- * dev, proxied through Vite), so a relative URL keeps CORS out of the picture.
+ * The server is served from the same origin as the API (the backend), so we
+ * reuse the same origin resolution as the REST calls. In production this is
+ * the deployed backend origin (or the frontend origin if none is configured)
+ * — never a developer's localhost.
  */
 let socket: Socket | null = null;
 
@@ -18,7 +21,7 @@ export function registerSocketTokenGetter(
 }
 
 function createSocket(): Socket {
-  const url = import.meta.env.VITE_API_ORIGIN || undefined;
+  const url = apiOrigin();
   const s = io(url, {
     path: "/socket.io",
     transports: ["websocket", "polling"],

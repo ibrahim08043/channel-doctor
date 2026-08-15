@@ -13,6 +13,7 @@ import {
   ChevronDown, ChevronUp,
 } from "lucide-react";
 import { fadeUp, stagger } from "@/lib/motion";
+import { apiOrigin, apiUrl } from "@/lib/api";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -77,7 +78,7 @@ function ConnectInner() {
 
   // ── Fetch credential/config status ──────────────────────────────────────
   useEffect(() => {
-    fetch("/api/youtube-oauth/check", { credentials: "include" })
+    fetch(apiUrl("/api/youtube-oauth/check"), { credentials: "include" })
       .then((r) => r.json())
       .then((d) => setCheck(d as CheckResult))
       .catch(() => {});
@@ -86,10 +87,11 @@ function ConnectInner() {
   // ── Auto-detect: check DB for stored tokens ──────────────────────────────
   const runAutoDetect = async () => {
     try {
-      const resp = await fetch("/api/connected/auto-detect-youtube", {
+      const resp = await fetch(apiUrl("/api/connected/auto-detect-youtube"), {
         method: "POST",
         credentials: "include",
       });
+      if (!resp.ok) return null;
       const result = (await resp.json().catch(() => ({}))) as Record<string, any>;
       return result.channelId ? result : null;
     } catch {
@@ -207,21 +209,18 @@ function ConnectInner() {
   }, []);
 
   // ── Start YouTube OAuth ──────────────────────────────────────────────────
-  // Navigates to the BACKEND's OAuth start endpoint (VITE_API_ORIGIN, which is
-  // http://localhost:8080 in dev) so the Google callback URI computed by the
-  // server matches the one registered in Google Cloud Console:
-  //   http://localhost:8080/api/youtube-oauth/callback
+  // Navigates to the BACKEND's OAuth start endpoint (the same backend origin
+  // used for every API call) so the Google callback URI computed by the
+  // server matches the one registered in Google Cloud Console. In production
+  // this is the deployed backend origin, not localhost.
   // returnUrl points back at the FRONTEND /connect page, where the backend
   // redirects the user after consent with ?youtube_success=1.
   const handleConnectYouTube = () => {
-    const apiOrigin = import.meta.env.VITE_API_ORIGIN || window.location.origin;
+    const origin = apiOrigin();
     const returnUrl = encodeURIComponent(
       `${window.location.origin}${base}/connect`
     );
-    const oauthUrl = `${apiOrigin}/api/youtube-oauth/start?returnUrl=${returnUrl}`;
-
-    console.log("Current origin:", window.location.origin);
-    console.log("OAuth URL:", oauthUrl);
+    const oauthUrl = `${origin}/api/youtube-oauth/start?returnUrl=${returnUrl}`;
 
     setPhase({ id: "starting_oauth" });
     window.location.href = oauthUrl;
@@ -234,7 +233,7 @@ function ConnectInner() {
     if (!input) return;
     setPhase({ id: "looking_up" });
     try {
-      const resp = await fetch("/api/connected/lookup-channel", {
+      const resp = await fetch(apiUrl("/api/connected/lookup-channel"), {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -256,7 +255,7 @@ function ConnectInner() {
   const handleConfirmLink = async (channelId: string, channelTitle: string, channelThumbnail: string | null) => {
     setPhase({ id: "linking", channelId, channelTitle, channelThumbnail });
     try {
-      const resp = await fetch("/api/connected/link-channel", {
+      const resp = await fetch(apiUrl("/api/connected/link-channel"), {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

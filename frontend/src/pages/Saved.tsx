@@ -52,7 +52,7 @@ function SavedInner() {
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-bold tracking-tight">Saved analyses</h1>
-      {(!data || data.items.length === 0) && (
+      {(!data || (data.items?.length ?? 0) === 0) && (
         <Card className="p-8 text-center text-sm text-muted-foreground">
           You haven't saved any analyses yet. Open a channel and click "Save analysis".
         </Card>

@@ -173,7 +173,7 @@ export default function HomePage() {
               Failed to search. {(error as Error).message}
             </Card>
           )}
-          {!isFetching && data && data.results.length === 0 && (
+          {!isFetching && data && (data.results?.length ?? 0) === 0 && (
             <Card className="p-6 text-sm text-muted-foreground">No channels found.</Card>
           )}
           <motion.div
@@ -182,7 +182,7 @@ export default function HomePage() {
             animate="show"
             className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3"
           >
-            {data?.results.map((c) => (
+            {data?.results?.map((c) => (
               <motion.div key={c.id} variants={fadeUp}>
                 <Link href={`/channel/${c.id}`}>
                   <Card className="group flex h-full items-start gap-4 p-4 glass transition-all hover:border-primary/40 hover:glow-primary hover-elevate cursor-pointer">

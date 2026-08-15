@@ -362,6 +362,26 @@ export async function customFetch<T = unknown>(
 
   const response = await fetch(input, { ...init, method, headers });
 
+  // Guard: an HTML page is never a valid API payload. This happens when a
+  // static host's SPA catch-all (e.g. Netlify's `/* -> /index.html`) answers
+  // an API request because the backend isn't deployed (or isn't reachable).
+  // Without this guard the page's text would be returned as "successful"
+  // data, and consumers reading e.g. `results.length` off it would crash on
+  // `undefined.length`. Reject it so callers surface a clear error instead.
+  const successMediaType = getMediaType(response.headers);
+  if (response.ok && successMediaType === "text/html") {
+    const rawBody = await response.text();
+    throw new ResponseParseError(
+      response,
+      rawBody,
+      new Error(
+        "The API endpoint returned an HTML page instead of JSON. " +
+          "The backend may not be deployed or the API origin is misconfigured.",
+      ),
+      requestInfo,
+    );
+  }
+
   if (!response.ok) {
     const errorData = await parseErrorBody(response, method);
     throw new ApiError(response, errorData, requestInfo);

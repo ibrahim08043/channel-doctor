@@ -37,7 +37,7 @@ export default function CompetitorsPanel({ channelId }: { channelId: string }) {
             </div>
           )}
 
-          {data.competitors.length > 0 && (
+          {(data.competitors?.length ?? 0) > 0 && (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead className="text-xs uppercase tracking-wider text-muted-foreground">
@@ -75,7 +75,7 @@ export default function CompetitorsPanel({ channelId }: { channelId: string }) {
           )}
 
           <div className="grid gap-3 md:grid-cols-2">
-            {data.advantages.length > 0 && (
+            {(data.advantages?.length ?? 0) > 0 && (
               <div className="space-y-2 rounded-md border border-emerald-500/20 bg-emerald-500/5 p-3">
                 <div className="flex items-center gap-2 text-sm font-semibold text-emerald-300">
                   <CheckCircle2 className="h-4 w-4" /> Where you win
@@ -87,7 +87,7 @@ export default function CompetitorsPanel({ channelId }: { channelId: string }) {
                 </ul>
               </div>
             )}
-            {data.gaps.length > 0 && (
+            {(data.gaps?.length ?? 0) > 0 && (
               <div className="space-y-2 rounded-md border border-rose-500/20 bg-rose-500/5 p-3">
                 <div className="flex items-center gap-2 text-sm font-semibold text-rose-300">
                   <AlertCircle className="h-4 w-4" /> Gaps to close

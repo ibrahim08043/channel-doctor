@@ -71,7 +71,7 @@ export default function ChannelPage() {
       <Card className="p-6">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold">View trend</h2>
-          <div className="text-xs text-muted-foreground">Recent {data.viewTrend.length} videos</div>
+          <div className="text-xs text-muted-foreground">Recent {data.viewTrend?.length ?? 0} videos</div>
         </div>
         <ViewTrendChart points={data.viewTrend} />
       </Card>
