@@ -78,11 +78,12 @@ export async function startOauth(req: Request, res: Response, next: NextFunction
     url.searchParams.set("access_type", "offline");
     url.searchParams.set("prompt", "consent");
     url.searchParams.set("state", state);
-    // ── TEMPORARY DEBUG LOG ────────────────────────────────────────────────
     console.log("Google Redirect URI:", callbackUri);
     console.log("Generated OAuth URL:", url.toString());
-    // ───────────────────────────────────────────────────────────────────────
-    res.redirect(302, url.toString());
+    // Always return JSON. Mobile clients send Accept: application/json and
+    // cannot follow 302 redirects with auth headers. Cloudflare/Render may
+    // strip or rewrite the Accept header, so we no longer branch on it.
+    res.json({ url: url.toString() });
   } catch (err) { next(err); }
 }
 

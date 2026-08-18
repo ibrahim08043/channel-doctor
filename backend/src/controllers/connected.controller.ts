@@ -54,7 +54,7 @@ export async function autoDetectYoutube(req: Request, res: Response, next: NextF
     const userId = getUserId(req);
     const user = await ensureUser(userId);
     if (user.channelId) {
-      res.json({ channelId: user.channelId, channelTitle: user.channelTitle ?? null, channelThumbnail: user.channelThumbnail ?? null });
+      res.json({ channelId: user.channelId, channelTitle: user.channelTitle ?? null, channelThumbnail: user.channelThumbnail ?? null, viaGoogle: !!user.youtubeRefreshToken });
       return;
     }
     if (user.youtubeRefreshToken) {
@@ -68,7 +68,7 @@ export async function autoDetectYoutube(req: Request, res: Response, next: NextF
           const ctitle = (item.snippet?.title ?? null) as string | null;
           const cthumb = (item.snippet?.thumbnails?.default?.url ?? item.snippet?.thumbnails?.medium?.url ?? null) as string | null;
           await User.findByIdAndUpdate(userId, { channelId: cid, channelTitle: ctitle, channelThumbnail: cthumb });
-          res.json({ channelId: cid, channelTitle: ctitle, channelThumbnail: cthumb });
+          res.json({ channelId: cid, channelTitle: ctitle, channelThumbnail: cthumb, viaGoogle: true });
           return;
         }
         await User.findByIdAndUpdate(userId, { youtubeRefreshToken: null, youtubeTokenExpiry: null });
