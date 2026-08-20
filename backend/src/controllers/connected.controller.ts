@@ -148,7 +148,16 @@ export async function disconnectChannel(req: Request, res: Response, next: NextF
   try {
     const userId = getUserId(req);
     await ensureUser(userId);
-    await User.findByIdAndUpdate(userId, { channelId: null, channelTitle: null, channelThumbnail: null });
+    // CRITICAL: Clear youtubeRefreshToken alongside channel fields.
+    // If the refresh token survives, autoDetectYouTube will exchange it on
+    // next app startup and re-establish the connection — undoing the disconnect.
+    await User.findByIdAndUpdate(userId, {
+      channelId: null,
+      channelTitle: null,
+      channelThumbnail: null,
+      youtubeRefreshToken: null,
+      youtubeTokenExpiry: null,
+    });
     const user = await User.findById(userId);
     res.json({ id: user!.id, email: user!.email ?? null, name: user!.name ?? null, avatar: user!.avatar ?? null, channelId: user!.channelId ?? null, channelTitle: user!.channelTitle ?? null, channelThumbnail: user!.channelThumbnail ?? null, plan: user!.plan });
   } catch (err) { next(err); }
