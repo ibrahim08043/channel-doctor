@@ -15,13 +15,18 @@ import { logger } from "../lib/logger";
  *   VISION_MODEL  – the only Groq model with image (vision) input support
  */
 
-export const DEFAULT_MODEL = "llama-3.3-70b-versatile";
+// Groq decommissioned the Llama preview models (llama-3.1-8b-instant,
+// llama-3.3-70b-versatile, etc.) on this account. The only chat model that
+// supports JSON mode here is qwen/qwen3.8-27b, so both the default and the
+// fast/parallel path use it. If Groq restores rate-limited Llama tiers, move
+// DEFAULT_MODEL to that tier for higher-quality output.
+export const DEFAULT_MODEL = "qwen/qwen3.8-27b";
 export const VISION_MODEL = "qwen/qwen3.6-27b";
-// Fast, high-rate-limit model for the social analyzer's multi-call analysis.
-// The 70b models are rate-limited hard on Groq's free tier (~30 RPM), which
-// caused HTTP 429 when the analyzer made 5-6 sequential calls. llama-3.1-8b
-// handles JSON mode and offers a much higher free-tier request ceiling.
-export const FAST_MODEL = "llama-3.1-8b-instant";
+// Fast path used by the social analyzer's multi-call analysis. Now the same
+// model as DEFAULT_MODEL (qwen/qwen3.8-27b) — Groq's current model catalog on
+// this account only exposes the two qwen variants, and 3.8 handles JSON mode
+// reliably for the parallel structure calls.
+export const FAST_MODEL = "qwen/qwen3.8-27b";
 
 let _client: Groq | null = null;
 
@@ -98,6 +103,11 @@ async function withRetry<T>(
  */
 function extractJson<T>(content: string): T {
   let text = (content ?? "").trim();
+  // Strip a possible <thinking>…</thinking> reasoning leak (qwen3 models emit
+  // chain-of-thought even inside JSON mode on long prompts). Without this the
+  // first/last brace search below could grab a brace inside the reasoning text
+  // and fail to parse, 500ing the endpoint.
+  text = text.replace(/<thinking>[\s\S]*?<\/thinking>/gi, "").trim();
   // Strip ```json ... ``` fences.
   const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/i);
   if (fenced) text = fenced[1].trim();
