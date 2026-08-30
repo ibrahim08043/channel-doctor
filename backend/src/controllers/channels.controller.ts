@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import { searchChannels, getChannelRaw, getRecentVideos, searchSimilarChannels } from "../services/youtube.service";
+import { searchChannels, getChannelRaw, getRecentVideos, searchSimilarChannels, getVideo } from "../services/youtube.service";
 import { deriveMetrics, healthScore, viewTrend, uploadCadenceSeries } from "../services/analysis.service";
 import { jsonCompletion, structuredCompletion, FAST_MODEL } from "../services/groq.service";
 import { cached } from "../services/cache.service";

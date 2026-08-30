@@ -23,6 +23,17 @@ export interface YTChannelSearchItem {
   customUrl?: string;
 }
 
+export interface YTVideoSearchItem {
+  id: string;
+  title: string;
+  thumbnail: string;
+  channelId: string;
+  channelTitle: string;
+  publishedAt: string;
+  durationSeconds: number;
+  views: number;
+}
+
 export async function searchChannels(query: string): Promise<YTChannelSearchItem[]> {
   const trimmed = query.trim();
   if (!trimmed) return [];
